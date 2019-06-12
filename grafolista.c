@@ -2,21 +2,39 @@
 #include <stdlib.h>
 #include <string.h>
 #include "grafolista.h"
-#define MAX 25
+
+
+
+
+typedef struct _usuario{
+    char nome[MAX];
+    int  idade;
+    char cidade[MAX];
+    char consoleFavorito[MAX];
+    char generoFilme[MAX];
+    char areaAtuacao[MAX];
+    char timeEsportivo[MAX];
+};
+
+
 
 struct _aresta {
-    char nome[MAX];
+    char nomeAmizade[MAX];
+    int grauAfinidade;
     struct _aresta *prox;
 };
 
 struct _vertice {
     char nome[MAX];
     char classe[MAX];
+    Usuario usuario;
     int num_arestas;
 	struct _vertice *prox;
     Aresta *primeiro_elem;
     Aresta *ultimo_elem;
 };
+
+
 
 /*Função criar_grafo: cria um grafo;
 @argumentos: void;
@@ -36,10 +54,19 @@ Grafo *criar_grafo(){
 @argumentos: ponteiro para grafo G e string da palavra;
 @retorno: void;	
 */
-void inserir_vertice(Grafo *G, char nome[], char classe[]){
+void inserir_vertice(Grafo *G, Usuario novoUsuario){
     Vertice *V = (Vertice *) malloc(sizeof(Vertice));
-    strcpy(V->nome, nome);
-    strcpy(V->classe, classe);
+
+
+    strcpy(V->usuario.nome, novoUsuario.nome);
+    V->usuario.idade = novoUsuario.idade;
+    strcpy(V->usuario.cidade, novoUsuario.cidade );
+    strcpy(V->usuario.consoleFavorito, novoUsuario.consoleFavorito );
+    strcpy(V->usuario.generoFilme, novoUsuario.generoFilme );
+    strcpy(V->usuario.areaAtuacao, novoUsuario.areaAtuacao );
+    strcpy(V->usuario.timeEsportivo, novoUsuario.timeEsportivo );
+
+
     G->numVertices++;
     V->primeiro_elem = NULL;
     V->ultimo_elem = NULL;
@@ -53,15 +80,15 @@ void inserir_vertice(Grafo *G, char nome[], char classe[]){
     
 }
 
-/*Função buscar_vert: verifica se a palavra ja esta na lista de vertices;
+/*Função buscar_vert: verifica se um vertice ja esta na lista de vertices;
 @argumentos: ponteiro para grafo G e string da palavra;
 @retorno: retorna, se obteve sucesso, um ponteiro para o vertice;	
 */
-Vertice *buscar_vert(Grafo *G, char word[]) {
+Vertice *buscar_vert(Grafo *G, char nomeUsuario[]) {
 	if(G != NULL){
         Vertice *V = G->vertices;
 		while(V != NULL){
-            if(!(strcmp(V->nome,word))) return (V);
+            if(!(strcmp(V->usuario.nome,nomeUsuario))) return (V);
             V = V->prox;
         }
 	}
@@ -72,11 +99,11 @@ Vertice *buscar_vert(Grafo *G, char word[]) {
 @argumentos: ponteiro para grafo G, string da palavra vertice e string da palavra aresta;
 @retorno: retorna void;	
 */
-void inserir_aresta(Grafo *G, char nome_vertice[], char nome_aresta[]){
+void inserir_aresta(Grafo *G, char nome_vertice[], char nome_aresta[]){ //**ajeitar isso aqui para não ser direcional
     Vertice *V = buscar_vert(G, nome_vertice);
     if(V != NULL){
         Aresta *A = (Aresta*) malloc(sizeof(Aresta));
-        strcpy(A->nome, nome_aresta);
+        strcpy(A->nomeAmizade, nome_aresta);
         V->num_arestas++;
         if(V->primeiro_elem != NULL){
             A->prox = V->ultimo_elem->prox;
@@ -105,7 +132,7 @@ void imprime_grafo(Grafo *G) {
             printf("Vertice: %s, Classe Gram: %s - %d arestas\n", V->nome, V->classe, V->num_arestas);
             while (A != NULL){
                 printf("        |\n");
-                printf("        ->%s\n", A->nome);
+                printf("        ->%s\n", A->nomeAmizade);
                 A = A->prox;
             }
             V = V->prox;
@@ -125,7 +152,7 @@ Aresta* buscar_aresta(Vertice* V, char* nome)
         Aresta *temp = V->primeiro_elem;
         while(temp != NULL)
         {
-            if(!strcmp(temp->nome, nome))
+            if(!strcmp(temp->nomeAmizade, nome))
             {
                 return temp;
             }
@@ -133,46 +160,6 @@ Aresta* buscar_aresta(Vertice* V, char* nome)
         }
     }
     return NULL;
-}
-
-
-/*Funçao checarPlagio: Calcula a porcentagem de plágio de um texto
-@argumentos: texto a ser analisado e texto original
-@retorno: porcentagem do plagio entre os dois
-*/
-float checarPlagio(Grafo *textoA, Grafo *textoB)
-{   
-    Vertice *V = textoA->vertices, *tempV;
-    Aresta *A;
-    int relationCnt = 0, numEdges = 0;
-    int wordCnt = 0;
-
-    while(V != NULL)
-    {    
-        A = V->primeiro_elem;
-        tempV = buscar_vert(textoB, V->nome);
-        if(tempV != NULL) //achou a palavra no outro grafo
-        {
-            if(!strcmp(tempV->classe,V->classe)) //checa se a palavra igual tem a mesma classe gramatical 
-            {
-                wordCnt ++; //incrementa o contador de palavras iguais
-                while (A != NULL) //checar quais outras palavras do texto a palavra em análise se relaciona
-                {
-                    numEdges++;
-                    if(buscar_aresta(tempV, A->nome)) //se nao achar retorna null (falso)
-                    {
-                        relationCnt++;
-                    }
-                    A = A->prox;
-                }
-            }
-        }
-        V = V->prox;
-    }
-    // numEdges = contarArestas(textoA);
-    // printf("word: %d, relation: %d, numberWords: %d, numberEdges: %d\n\n ",wordCnt, relationCnt, textoA->numVertices, numEdges);
-
-    return ((float)relationCnt/(float)numEdges)*100; // calcula e retorna a porcentagem de plágio
 }
 
 /*Funçao contarArestas: conta a quantidade de arestas em todos os vertices de um grafo
