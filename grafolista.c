@@ -6,33 +6,9 @@
 
 
 
-typedef struct _usuario{
-    char nome[MAX];
-    int  idade;
-    char cidade[MAX];
-    char consoleFavorito[MAX];
-    char generoFilme[MAX];
-    char areaAtuacao[MAX];
-    char timeEsportivo[MAX];
-};
 
 
 
-struct _aresta {
-    char nomeAmizade[MAX];
-    int grauAfinidade;
-    struct _aresta *prox;
-};
-
-struct _vertice {
-    char nome[MAX];
-    char classe[MAX];
-    Usuario usuario;
-    int num_arestas;
-	struct _vertice *prox;
-    Aresta *primeiro_elem;
-    Aresta *ultimo_elem;
-};
 
 
 
@@ -129,7 +105,7 @@ void imprime_grafo(Grafo *G) {
         printf("Grafo texto - %d vertices:\n", G->numVertices);
         while (V != NULL){
             A = V->primeiro_elem;
-            printf("Vertice: %s, Classe Gram: %s - %d arestas\n", V->nome, V->classe, V->num_arestas);
+            printf("Vertice: %s, - %d arestas\n", V->usuario.nome, V->num_arestas);
             while (A != NULL){
                 printf("        |\n");
                 printf("        ->%s\n", A->nomeAmizade);

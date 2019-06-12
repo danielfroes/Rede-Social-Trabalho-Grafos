@@ -1,27 +1,6 @@
 #include "fileManagement.h"
 
 
-Usuario* ReadUserFile(char* fileName)
-{
-    char line[500];
-    char** lineData;
-    Usuario*
-
-    FILE *f = fopen(fileName, "r"); 
-
-
-
-    fgets(line, 500, f);
-
-    while(fgets(line, 500, f)!= NULL)
-    {
-        lineData = split(line, ",");
-
-    }
-
-    fclose(f);
-}
-
 
 
 /*  @ Divide uma string usando os caracteres da string divider como delimitodores;
@@ -49,4 +28,49 @@ char** split(char* str, char*  divider )
 
     return matrix;
 }
+
+
+
+Usuario* ReadUserFile(char* fileName)
+{
+    char line[500];
+    char** lineData;
+    Usuario* usersArray = (Usuario*) malloc(sizeof(Usuario));
+    int nElem = 1, i = 0;
+    FILE *f = fopen(fileName, "r");
+
+    fgets(line, 500, f); // pula a linha com os nomes dos campos;
+
+    while(fgets(line, 500, f)!= NULL)
+    {
+
+        lineData = split(line, ",\n");
+
+        usersArray = (Usuario*)realloc(usersArray , nElem*sizeof(Usuario));
+        
+        usersArray[i].id = atoi(lineData[0]);
+        strcpy(usersArray[i].nome, lineData[1]);
+        usersArray[i].idade = atoi(lineData[2]);
+        strcpy(usersArray[i].cidade, lineData[3]);
+        strcpy(usersArray[i].generoFilme, lineData[4]);
+        strcpy(usersArray[i].consoleFavorito, lineData[5]);
+        strcpy(usersArray[i].areaAtuacao, lineData[6]);
+        strcpy(usersArray[i].timeEsportivo, lineData[7]);
+
+        i++;
+        nElem++;
+    }
+
+    usersArray = (Usuario*)realloc(usersArray , nElem*sizeof(Usuario));
+    strcpy(usersArray[i].nome, END_OF_ARRAY);
+
+    fclose(f);
+    
+    return usersArray;
+}
+
+
+
+
+
 

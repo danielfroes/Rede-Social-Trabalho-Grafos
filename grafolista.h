@@ -13,6 +13,32 @@ struct _grafo {
     int numVertices;
 };
 
+struct _usuario{
+    int id;
+    char nome[MAX];
+    int  idade;
+    char cidade[MAX];
+    char consoleFavorito[MAX];
+    char generoFilme[MAX];
+    char areaAtuacao[MAX];
+    char timeEsportivo[MAX];
+};
+
+struct _aresta {
+    char nomeAmizade[MAX];
+    int grauAfinidade;
+    struct _aresta *prox;
+};
+
+struct _vertice {
+    Usuario usuario;
+    int num_arestas;
+	struct _vertice *prox;
+    Aresta *primeiro_elem;
+    Aresta *ultimo_elem;
+};
+
+
 Grafo *criar_grafo();
 void inserir_vertice(Grafo *G, Usuario novoUsuario);
 Vertice *buscar_vert(Grafo *G, char word[]);

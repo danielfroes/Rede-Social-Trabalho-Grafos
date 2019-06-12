@@ -7,6 +7,9 @@
 #include <string.h>
 #include "grafolista.h"
 
+
+#define END_OF_ARRAY "\0"
+
 Usuario* ReadUserFile(char* fileName);
 
 

@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "grafolista.h": "c"
+        "grafolista.h": "c",
+        "filemanagement.h": "c"
     }
 }
