@@ -5,13 +5,6 @@
 
 
 
-
-
-
-
-
-
-
 /*Função criar_grafo: cria um grafo;
 @argumentos: void;
 @retorno: retorna, se obteve sucesso, um ponteiro para o grafo criado;	
@@ -71,23 +64,24 @@ Vertice *buscar_vert(Grafo *G, char nomeUsuario[]) {
     return NULL;	
 }
 
+
+
 /*Função inserir_aresta: insere uma palavra na lista de arestas de um vertice;
 @argumentos: ponteiro para grafo G, string da palavra vertice e string da palavra aresta;
 @retorno: retorna void;	
 */
-void inserir_aresta(Grafo *G, char nome_vertice[], char nome_aresta[]){ //**ajeitar isso aqui para não ser direcional
-    Vertice *V = buscar_vert(G, nome_vertice);
-    if(V != NULL){
+void inserir_aresta(Grafo *G, Vertice* Va, Vertice* Vb){
+    if(Va != NULL && Vb != NULL){
         Aresta *A = (Aresta*) malloc(sizeof(Aresta));
-        strcpy(A->nomeAmizade, nome_aresta);
-        V->num_arestas++;
-        if(V->primeiro_elem != NULL){
-            A->prox = V->ultimo_elem->prox;
-            V->ultimo_elem->prox = A;
+        A->usuarioAmigo = Vb->usuario;
+        Va->num_arestas++;
+        if(Va->primeiro_elem != NULL){
+            A->prox = Va->ultimo_elem->prox;
+            Va->ultimo_elem->prox = A;
         }
         else {
-            V->primeiro_elem = A;
-            V->ultimo_elem = A;
+            Va->primeiro_elem = A;
+            Va->ultimo_elem = A;
             A->prox = NULL;
         }
     }
@@ -108,7 +102,7 @@ void imprime_grafo(Grafo *G) {
             printf("Vertice: %s, - %d arestas\n", V->usuario.nome, V->num_arestas);
             while (A != NULL){
                 printf("        |\n");
-                printf("        ->%s\n", A->nomeAmizade);
+                printf("        ->%s\n", A->usuarioAmigo.nome);
                 A = A->prox;
             }
             V = V->prox;
@@ -128,7 +122,7 @@ Aresta* buscar_aresta(Vertice* V, char* nome)
         Aresta *temp = V->primeiro_elem;
         while(temp != NULL)
         {
-            if(!strcmp(temp->nomeAmizade, nome))
+            if(!strcmp(temp->usuarioAmigo.nome, nome))
             {
                 return temp;
             }

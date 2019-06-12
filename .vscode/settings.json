@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "grafolista.h": "c",
-        "filemanagement.h": "c"
+        "filemanagement.h": "c",
+        "string.h": "c",
+        "socialnetwork.h": "c",
+        "stdlib.h": "c"
     }
 }

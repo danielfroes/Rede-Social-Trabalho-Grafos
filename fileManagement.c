@@ -25,19 +25,20 @@ char** split(char* str, char*  divider )
         token = strtok(NULL, divider);
         i++;
     }
+    
 
     return matrix;
 }
 
 
 
-Usuario* ReadUserFile(char* fileName)
+Usuario* ReadUserFile()
 {
     char line[500];
     char** lineData;
     Usuario* usersArray = (Usuario*) malloc(sizeof(Usuario));
     int nElem = 1, i = 0;
-    FILE *f = fopen(fileName, "r");
+    FILE *f = fopen(__USERDATA_FILE_NAME__, "r");
 
     fgets(line, 500, f); // pula a linha com os nomes dos campos;
 
@@ -48,14 +49,14 @@ Usuario* ReadUserFile(char* fileName)
 
         usersArray = (Usuario*)realloc(usersArray , nElem*sizeof(Usuario));
         
-        usersArray[i].id = atoi(lineData[0]);
-        strcpy(usersArray[i].nome, lineData[1]);
-        usersArray[i].idade = atoi(lineData[2]);
-        strcpy(usersArray[i].cidade, lineData[3]);
-        strcpy(usersArray[i].generoFilme, lineData[4]);
-        strcpy(usersArray[i].consoleFavorito, lineData[5]);
-        strcpy(usersArray[i].areaAtuacao, lineData[6]);
-        strcpy(usersArray[i].timeEsportivo, lineData[7]);
+
+        strcpy(usersArray[i].nome, lineData[0]);
+        usersArray[i].idade = atoi(lineData[1]);
+        strcpy(usersArray[i].cidade, lineData[2]);
+        strcpy(usersArray[i].generoFilme, lineData[3]);
+        strcpy(usersArray[i].consoleFavorito, lineData[4]);
+        strcpy(usersArray[i].areaAtuacao, lineData[5]);
+        strcpy(usersArray[i].timeEsportivo, lineData[6]);
 
         i++;
         nElem++;
@@ -70,7 +71,19 @@ Usuario* ReadUserFile(char* fileName)
 }
 
 
-
-
+void saveNewUser(Usuario newUser)
+{
+    FILE* f = fopen(__USERDATA_FILE_NAME__, "a");
+    
+    fprintf(f, "%s,", newUser.nome);
+    fprintf(f, "%d,", newUser.idade);
+    fprintf(f, "%s,", newUser.cidade);
+    fprintf(f, "%s,", newUser.generoFilme);
+    fprintf(f, "%s,", newUser.consoleFavorito);
+    fprintf(f, "%s,", newUser.areaAtuacao);
+    fprintf(f, "%s\n", newUser.timeEsportivo);
+    
+    fclose(f);
+}
 
 

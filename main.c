@@ -1,41 +1,111 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "grafolista.h"
-#include "fileManagement.h"
+#include "socialNetwork.h"
 
+#define __EXIT__ 0
+
+#define __LOGIN__ 1
+#define __CREATE_ACCOUNT__ 2
+
+#define __LOGOUT__ 1
+#define __ADICIONAR_AMIGO__ 2
+
+
+
+void printMenu(Usuario user);
 
 int main(int argc, char* argv[])
 {
 
-    char fileName[100] = "usuarios.csv";
-    Usuario* usersArray;
     Grafo* G;
+    short unsigned int menu;
 
-    G = criar_grafo();
-    
+    G = loadSocialNetwork();
 
-    usersArray = ReadUserFile(fileName);
+    Vertice* user = malloc(sizeof(user));
+    user->usuario.logged = false;
 
 
 
-    for(int i=0; strcmp(usersArray[i].nome,END_OF_ARRAY); i++)
+    while(true)
     {
-        inserir_vertice(G, usersArray[i]);
+
+        printMenu(user->usuario);
+
+        scanf("%hd", &menu);
+        system("clear");
+
+
+       
+        if(menu == __EXIT__)
+        {
+            printf(__DOTTED_LINE);
+            printf("Até a próxima! =D \n\n");
+            printf(__DOTTED_LINE);
+            break;
+        }
+
+
+        if(user->usuario.logged)
+        {  
+            if(menu == __LOGOUT__)
+            {
+                logout(user);
+            }
+            else if(menu == __ADICIONAR_AMIGO__)
+            {
+                addFriend(G, user);
+            }
+        }
+        else //usuario não logado
+        {
+            if(menu == __LOGIN__)
+            {      
+                user = login(G);
+            }
+            else if(menu == __CREATE_ACCOUNT__)
+            {
+                createAccount(G);
+                G = loadSocialNetwork();
+            }
+        }
+  
+
     }
-
- 
-    Vertice* V = buscar_vert(G, "Lúcio");
-
-    inserir_aresta(G, V->usuario.nome, "Daniela" );
-
-
-    imprime_grafo(G);
-
-
-
     free(G);
-    free(usersArray);
+ 
 }
 
 
+void printMenu(Usuario user)
+{
+
+    system("clear");
+    printf(__DOTTED_LINE);
+    printf(__DOTTED_LINE);
+    
+    
+    if(user.logged)
+    {
+        printf("Olá, %s! Tudo bem?\n", user.nome);
+        printf("O que você deseja fazer agora?\n");
+        printf(__DOTTED_LINE);
+        printf("0 - SAIR DO PROGRAMA\n\n");
+        printf("1 - LOGOUT\n\n");
+        printf("2 - ADICIONAR UM AMIGO\n\n");
+      
+    }
+    else
+    {  
+        printf("Você não está conectado! Por favor, faça o login na sua conta!\n\n");
+        printf(__DOTTED_LINE);
+        printf("0 - SAIR DO PROGRAMA\n\n");
+        printf("1 - LOGIN\n\n");
+        printf("2 - CRIAR NOVA CONTA\n\n");
+    }
+    
+    printf(__DOTTED_LINE);
+    printf(__DOTTED_LINE);
+
+}

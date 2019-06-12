@@ -6,11 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "grafolista.h"
-
+#include <ctype.h>
 
 #define END_OF_ARRAY "\0"
+#define __USERDATA_FILE_NAME__ "database/userData.csv"
 
-Usuario* ReadUserFile(char* fileName);
+Usuario* ReadUserFile();
+void saveNewUser(Usuario user);
 
 
 

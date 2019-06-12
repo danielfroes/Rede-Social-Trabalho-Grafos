@@ -3,10 +3,17 @@
 
 #define MAX 100
 
+#define false 0
+#define true 1
+
+typedef int bool;
+
+
 typedef struct _aresta Aresta;
 typedef struct _vertice Vertice;
 typedef struct _grafo Grafo;
 typedef struct _usuario Usuario;
+
 
 struct _grafo {
     Vertice *vertices;
@@ -14,7 +21,7 @@ struct _grafo {
 };
 
 struct _usuario{
-    int id;
+    bool logged;
     char nome[MAX];
     int  idade;
     char cidade[MAX];
@@ -25,7 +32,7 @@ struct _usuario{
 };
 
 struct _aresta {
-    char nomeAmizade[MAX];
+    Usuario usuarioAmigo;
     int grauAfinidade;
     struct _aresta *prox;
 };
@@ -42,7 +49,7 @@ struct _vertice {
 Grafo *criar_grafo();
 void inserir_vertice(Grafo *G, Usuario novoUsuario);
 Vertice *buscar_vert(Grafo *G, char word[]);
-void inserir_aresta(Grafo *G, char nome_vertice[], char nome_aresta[]);
+void inserir_aresta(Grafo *G, Vertice* Va, Vertice* Vb);
 void imprime_grafo(Grafo *G);
 float checarPlagio(Grafo *textoA, Grafo *textoB);
 int contarArestas(Grafo* G);
