@@ -57,7 +57,6 @@ Usuario* ReadUserFile()
         strcpy(usersArray[i].consoleFavorito, lineData[4]);
         strcpy(usersArray[i].areaAtuacao, lineData[5]);
         strcpy(usersArray[i].timeEsportivo, lineData[6]);
-
         i++;
         nElem++;
     }
