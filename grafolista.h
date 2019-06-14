@@ -53,5 +53,7 @@ void inserir_aresta(Grafo *G, Vertice* Va, Vertice* Vb);
 void imprime_grafo(Grafo *G);
 float checarPlagio(Grafo *textoA, Grafo *textoB);
 int contarArestas(Grafo* G);
+Aresta* buscar_aresta(Vertice* V, char* nome);
+void detectFalseFriends(Grafo *G, Vertice* user);
 
 #endif

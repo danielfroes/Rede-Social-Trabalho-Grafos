@@ -54,7 +54,7 @@ void createAccount(Grafo* G) //** adicionar a checagem para ver usernames repeti
     {
         printf("Digite seu username: "); scanf(" %[^\n]s", user.nome);
 
-        if(buscar_vert(G, user.nome) != NULL)//** não ta dando certo
+        if(buscar_vert(G, user.nome) == NULL)//** não ta dando certo
         {
   
             validName = true;
@@ -91,7 +91,37 @@ void addFriend(Grafo* G, Vertice* user)
     scanf("%[^\n]s", friendName);
 
     friend = buscar_vert(G, friendName);//** considerar caso de não encontrar
+    Aresta* friendship = buscar_aresta(user, friendName);
+    if(friend!=NULL && friendship==NULL){
+        inserir_aresta(G, user, friend);//** fazer calculo da pontuação
+        inserir_aresta(G, friend, user);
+    }else if(!friend){
+        printf("Usuário não encontrado!\n");
+    }else if(friendship){
+        printf("Você já é amigo deste usuário!\n");
+    }
+}
 
-    inserir_aresta(G, user, friend);//** fazer calculo da pontuação
-    inserir_aresta(G, friend, user);
+
+void detectFalseFriends(Grafo *G, Vertice* user){
+    Aresta* aux = user->primeiro_elem;
+    if(user->num_arestas){
+        for(int i=0; i<user->num_arestas; i++){
+            if(aux && aux->grauAfinidade < 20){
+                printf("Infelizmente o usuário %s tem baixa afinidade com você =(\n", aux->usuarioAmigo.nome);
+                printf("Deseja remover amizade?\n1 - SIM\n2 - NÂO\n");
+                int opcao=0;
+                while (opcao!= 1 && opcao!=2){
+                    scanf("%d", &opcao);
+                }
+                if(opcao==1){
+                    //Remover Aresta
+                }
+                
+            }
+            aux = aux->prox;
+        }
+    }else{
+        printf("Parabéns! Você não tem amigos!\n");
+    }
 }

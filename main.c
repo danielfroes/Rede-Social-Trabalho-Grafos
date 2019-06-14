@@ -10,7 +10,7 @@
 
 #define __LOGOUT__ 1
 #define __ADICIONAR_AMIGO__ 2
-
+#define __ENCONTRAR_FALSO_AMIGO__ 3
 
 
 void printMenu(Usuario user);
@@ -34,8 +34,8 @@ int main(int argc, char* argv[])
         printMenu(user->usuario);
 
         scanf("%hd", &menu);
-        system("clear");
-
+        //system("clear");
+        
 
        
         if(menu == __EXIT__)
@@ -56,6 +56,9 @@ int main(int argc, char* argv[])
             else if(menu == __ADICIONAR_AMIGO__)
             {
                 addFriend(G, user);
+                imprime_grafo(G);
+            }else if(menu == __ENCONTRAR_FALSO_AMIGO__){
+                detectFalseFriends(G, user);
             }
         }
         else //usuario não logado
@@ -81,7 +84,7 @@ int main(int argc, char* argv[])
 void printMenu(Usuario user)
 {
 
-    system("clear");
+    //system("clear");
     printf(__DOTTED_LINE);
     printf(__DOTTED_LINE);
     
@@ -94,7 +97,7 @@ void printMenu(Usuario user)
         printf("0 - SAIR DO PROGRAMA\n\n");
         printf("1 - LOGOUT\n\n");
         printf("2 - ADICIONAR UM AMIGO\n\n");
-      
+        printf("3 - ECONTRAR FALSAS AMIZADES\n\n");
     }
     else
     {  

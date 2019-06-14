@@ -48,7 +48,6 @@ Usuario* ReadUserFile()
         lineData = split(line, ",\n");
 
         usersArray = (Usuario*)realloc(usersArray , nElem*sizeof(Usuario));
-        
 
         strcpy(usersArray[i].nome, lineData[0]);
         usersArray[i].idade = atoi(lineData[1]);
