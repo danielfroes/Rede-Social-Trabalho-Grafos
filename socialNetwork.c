@@ -79,21 +79,20 @@ void createAccount(Grafo* G) //** adicionar a checagem para ver usernames repeti
     printf("\nDigite seu time: "); scanf(" %[^\n]s", user.timeEsportivo);
 
     saveNewUser(user);
-
+    
     G = loadSocialNetwork();
 }
 
-void addFriend(Grafo* G, Vertice* user)
-{
+void addFriend(Grafo* G, Vertice* user){
     char friendName[MAX];
     Vertice* friend;
-    printf("Digite o username do usuário que quer adicionar: "); 
+    printf("Digite o username do usuário que quer adicionar:\n"); 
     scanf("%[^\n]s", friendName);
-
-    friend = buscar_vert(G, friendName);//** considerar caso de não encontrar
-    Aresta* friendship = buscar_aresta(user, friendName);
+    Aresta* ant=NULL;
+    friend = buscar_vert(G, friendName);
+    Aresta* friendship = buscar_aresta(user, friendName, &ant);
     if(friend!=NULL && friendship==NULL){
-        inserir_aresta(G, user, friend);//** fazer calculo da pontuação
+        inserir_aresta(G, user, friend);
         inserir_aresta(G, friend, user);
     }else if(!friend){
         printf("Usuário não encontrado!\n");
@@ -115,7 +114,7 @@ void detectFalseFriends(Grafo *G, Vertice* user){
                     scanf("%d", &opcao);
                 }
                 if(opcao==1){
-                    //Remover Aresta
+                    removerAresta(G, user, aux);
                 }
                 
             }
@@ -124,4 +123,29 @@ void detectFalseFriends(Grafo *G, Vertice* user){
     }else{
         printf("Parabéns! Você não tem amigos!\n");
     }
+}
+
+void removeFriend(Grafo* G, Vertice* user){
+    if(user->num_arestas==0){
+        printf("Parabéns! Você não tem amigos!\n");
+        return;
+    }
+        
+    char toBeRemoved[MAX];
+    printf("Digite o nome do amigo que deseja remover a amizade: ");
+    scanf("%[^\n]", toBeRemoved);
+    Aresta* ant=NULL;
+    Aresta* friendship = buscar_aresta(user, toBeRemoved, &ant);
+    Vertice* otherUser = buscar_vert(G, toBeRemoved);
+    if(otherUser && friendship){
+        removerAresta(G, user, friendship);
+    }else if(!otherUser){
+        printf("Usuário não encontrado!\n");
+    }else if(!friendship){
+        printf("Você e %s não são amigos!\n", toBeRemoved);
+    }
+}
+
+void findTrueLove(Vertice *user){
+
 }

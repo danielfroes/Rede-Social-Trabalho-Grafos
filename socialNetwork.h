@@ -16,6 +16,7 @@ Vertice* login(Grafo* G);
 void logout(Vertice *user);
 void createAccount(Grafo* G);
 void addFriend(Grafo* G, Vertice* user);
-
+void removeFriend(Grafo* G, Vertice* user);
+void detectFalseFriends(Grafo *G, Vertice* user);
 
 #endif

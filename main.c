@@ -11,7 +11,7 @@
 #define __LOGOUT__ 1
 #define __ADICIONAR_AMIGO__ 2
 #define __ENCONTRAR_FALSO_AMIGO__ 3
-
+#define __REMOVER_AMIZADE__ 4
 
 void printMenu(Usuario user);
 
@@ -25,21 +25,19 @@ int main(int argc, char* argv[])
 
     Vertice* user = malloc(sizeof(user));
     user->usuario.logged = false;
+    
 
 
+    while(true){
 
-    while(true)
-    {
 
         printMenu(user->usuario);
-
         scanf("%hd", &menu);
         //system("clear");
         
 
        
-        if(menu == __EXIT__)
-        {
+        if(menu == __EXIT__){
             printf(__DOTTED_LINE);
             printf("Até a próxima! =D \n\n");
             printf(__DOTTED_LINE);
@@ -49,16 +47,16 @@ int main(int argc, char* argv[])
 
         if(user->usuario.logged)
         {  
-            if(menu == __LOGOUT__)
-            {
+            if(menu == __LOGOUT__){
                 logout(user);
             }
-            else if(menu == __ADICIONAR_AMIGO__)
-            {
-                addFriend(G, user);
+            else if(menu == __ADICIONAR_AMIGO__){
                 imprime_grafo(G);
+                addFriend(G, user);
             }else if(menu == __ENCONTRAR_FALSO_AMIGO__){
                 detectFalseFriends(G, user);
+            }else if(menu == __REMOVER_AMIZADE__){
+                removeFriend(G, user);
             }
         }
         else //usuario não logado
@@ -83,7 +81,6 @@ int main(int argc, char* argv[])
 
 void printMenu(Usuario user)
 {
-
     //system("clear");
     printf(__DOTTED_LINE);
     printf(__DOTTED_LINE);
@@ -98,6 +95,7 @@ void printMenu(Usuario user)
         printf("1 - LOGOUT\n\n");
         printf("2 - ADICIONAR UM AMIGO\n\n");
         printf("3 - ECONTRAR FALSAS AMIZADES\n\n");
+        printf("4 - REMOVER AMIZADE\n\n");
     }
     else
     {  

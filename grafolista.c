@@ -127,10 +127,10 @@ void imprime_grafo(Grafo *G) {
         Vertice *V = G->vertices;
         Aresta *A;
         printf("Grafo texto - %d vertices:\n", G->numVertices);
-        while (V != NULL){
+        for (int j=0; j<G->numVertices; j++){
             A = V->primeiro_elem;
             printf("Vertice: %s, - %d arestas\n", V->usuario.nome, V->num_arestas);
-            while (A != NULL){
+            for (int i=0; i<V->num_arestas; i++){
                 printf("        |\n");
                 printf("        ->%s\n", A->usuarioAmigo.nome);
                 A = A->prox;
@@ -145,8 +145,9 @@ void imprime_grafo(Grafo *G) {
 @argumentos: vértice em análise e nome do vertice de destino da aresta
 @retorno: ponteiro para a aresta procurada; Caso não ache retorna null
 */
-Aresta* buscar_aresta(Vertice* V, char* nome)
+Aresta* buscar_aresta(Vertice* V, char* nome, Aresta** ant)
 {
+    Aresta* anterior=NULL;
     if(V != NULL)
     {
         Aresta *temp = V->primeiro_elem;
@@ -154,11 +155,14 @@ Aresta* buscar_aresta(Vertice* V, char* nome)
         {
             if(!strcmp(temp->usuarioAmigo.nome, nome))
             {
+                *ant = anterior;
                 return temp;
             }
+            anterior = temp;
             temp = temp->prox;
         }
     }
+    *ant = anterior;
     return NULL;
 }
 
@@ -178,4 +182,29 @@ int contarArestas(Grafo* G)
         }
 	}
     return cntA;
+}
+
+/*
+    Função removerAresta: remove as arestas entre 2 usuários
+    Parâmetros:
+    Grafo* G -> endereço do grafo
+    Vertice* user -> usuário que deseja remover a amizade
+    Aresta* toBeremoved -> primeira aresta a ser removida
+ */
+void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved){
+    Aresta* ant1=NULL,*ant2=NULL;
+
+    Vertice* user2 = buscar_vert(G, toBeRemoved->usuarioAmigo.nome);
+    Aresta* aresta2 = buscar_aresta(user2, user->usuario.nome, &ant2);
+    if(ant1 && toBeRemoved->prox){
+        ant1->prox = toBeRemoved->prox;
+    }
+    if(ant2 && aresta2->prox){
+        ant2->prox = aresta2->prox;
+    }
+    free(toBeRemoved);
+    free(aresta2);
+    user->num_arestas--;
+    user2->num_arestas--;
+    
 }
