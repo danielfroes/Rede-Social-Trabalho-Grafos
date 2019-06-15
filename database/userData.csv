@@ -1,25 +1,30 @@
-username,idade,cidade,consoleFavorito,generoFilme,areaAtuação,time
-Daniel,20,São Carlos,Switch,Ficção,Programação,Palmeiras
-Daniela,22,São Carlos,PS4,Romance,Escritora,São Paulo
-Tiago,19,São Carlos,PS4,Esportes Aquáticos,Estudante,São Caetano
-Marcello,53,Teresópolis,PC,A culpa é do PT,Advogado,Palmeiras
-Flávia,50,São Paulo,PC,Policial,Engenheiro,Palmeiras
-Joao Guilherme,19,São Carlos,3DS,Ficção,Vagabundagem,São Caetano
-Luisa,20,São Carlos,Xbox,Comédia Romântica,Vagabundagem,Palmeiras
-Daniel Froes,20,Recife,DSLite,Drama,Estudante,Figueira
-Regina,49,Recife,PC,Comédia Romântica,Empresário,Corinthians
-Lucio,60,Recife,PC,A culpa é do PT,Empresário,Corinthians
-Eduardo,12,Pinhal,Polystation3,Gore,Gamers,PinhalPC
-Juscelina,50,Pinhal,Peão,Cinema Mudo,Aposentado,PinhalPC
-Ana,13,Piraporinha de Santo Jesus,Polystation3,A culpa é do PT,Estudante,PinhalPC
-DarkSorcerer69,9,São Paulo,PS4,Comédia,Gamer,CNB
-G4mer Gurl,23,São Carlos,PC,Esportes Aquáticos,Gamer,CNB
-MeninoRuivin21,12,Piraporinha de Santo Jesus,PS2,Comédia,Gamer,PinhalPC
-Josevaldo,43,São Paulo,Jornal,Policial,Porteiro,Corinthians
-Beatriz,30,Recife,3DS,Comédia,Porteiro,Palmeiras
-Beto,33,Barretos,DSLite,Velho Oeste,Vaqueiro,CNB
-Drogon,13,Recife,PS4,Naruto,Caçador de dragões,cnb
-Daniel Sá,20,São Carlos,Ficcção,Switch,Programador,Palmeiras
-Daniel Garcia,20,Sp,Ação,PS4,Programador,CNB
-Juliana,19,São Carlos,Comédia,PC,CEO da Google,Brasil Feminino
-Nana,20,Sp,Bobo,Switch,Programa,nada
+id,username,idade,cidade,consoleFavorito,generoFilme,areaAtuação,time
+0,Daniel,20,São Carlos,Switch,Ficção,Programação,Palmeiras
+1,Daniela,22,São Carlos,PS4,Romance,Escritora,São Paulo
+2,Tiago,19,São Carlos,PS4,Esportes Aquáticos,Estudante,São Caetano
+3,Marcello,53,Teresópolis,PC,A culpa é do PT,Advogado,Palmeiras
+4,Flávia,50,São Paulo,PC,Policial,Engenheiro,Palmeiras
+5,Joao Guilherme,19,São Carlos,3DS,Ficção,Vagabundagem,São Caetano
+6,Luisa,20,São Carlos,Xbox,Comédia Romântica,Vagabundagem,Palmeiras
+7,Daniel Froes,20,Recife,DSLite,Drama,Estudante,Figueira
+8,Regina,49,Recife,PC,Comédia Romântica,Empresário,Corinthians
+9,Lucio,60,Recife,PC,A culpa é do PT,Empresário,Corinthians
+10,Eduardo,12,Pinhal,Polystation3,Gore,Gamers,PinhalPC
+11,Juscelina,50,Pinhal,Peão,Cinema Mudo,Aposentado,PinhalPC
+12,Ana,13,Piraporinha de Santo Jesus,Polystation3,A culpa é do PT,Estudante,PinhalPC
+13,DarkSorcerer69,9,São Paulo,PS4,Comédia,Gamer,CNB
+14,G4mer Gurl,23,São Carlos,PC,Esportes Aquáticos,Gamer,CNB
+15,MeninoRuivin21,12,Piraporinha de Santo Jesus,PS2,Comédia,Gamer,PinhalPC
+16,Josevaldo,43,São Paulo,Jornal,Policial,Porteiro,Corinthians
+17,Beatriz,30,Recife,3DS,Comédia,Porteiro,Palmeiras
+18,Beto,33,Barretos,DSLite,Velho Oeste,Vaqueiro,CNB
+19,Drogon,13,Recife,PS4,Naruto,Caçador de dragões,cnb
+20,Daniel Sá,20,São Carlos,Ficção,Switch,Programador,Palmeiras
+21,Daniel Garcia,20,Sp,Ação,PS4,Programador,CNB
+22,Juliana,19,São Carlos,Comédia,PC,CEO da Google,Brasil Feminino
+23,Nana,20,Sp,Bobo,Switch,Programa,nada
+24,Danielvis,20,São Carlos,Switch,Ficção,Programação,Palmeiras
+25,Haha,50,Sp,Ação,Switch,Nada,Nada
+26,Papa,60,Sp,Ação,Switch,Velho,Curitia
+27,Princesa da Disney Gangam Style,4,Koshtemir,Caipira Medieval,Atari,Degustador de salgadinho,Meio dia
+28,Pupo,6,Santa Rita do Passa 4,Anime Cyber punk,3DS,Marceneiro,CAASO

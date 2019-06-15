@@ -34,9 +34,12 @@ Vertice* login(Grafo* G) ///** adicionar senhas //** bug q não ta dando login d
 
 
     user = buscar_vert(G, username);
-
-    user->usuario.logged;
-
+    while(!user){
+        printf("Usuário não encontrado!\nDigite o username novamente: ");
+        scanf("\n%[^\n]s", username);
+        user = buscar_vert(G, username);
+    }
+    user->usuario.logged=true;
     return user;
 }
 
@@ -77,7 +80,8 @@ void createAccount(Grafo* G) //** adicionar a checagem para ver usernames repeti
     printf("\n\nDigite sua área de atuação profissional: "); scanf(" %[^\n]s", user.areaAtuacao);
     
     printf("\nDigite seu time: "); scanf(" %[^\n]s", user.timeEsportivo);
-
+    user.id = G->numVertices;
+    G->numVertices++;
     saveNewUser(user);
     
     G = loadSocialNetwork();
@@ -86,8 +90,8 @@ void createAccount(Grafo* G) //** adicionar a checagem para ver usernames repeti
 void addFriend(Grafo* G, Vertice* user){
     char friendName[MAX];
     Vertice* friend;
-    printf("Digite o username do usuário que quer adicionar:\n"); 
-    scanf("%[^\n]s", friendName);
+    printf("Digite o username do usuário que quer adicionar: "); 
+    scanf("\n%[^\n]s", friendName);
     Aresta* ant=NULL;
     friend = buscar_vert(G, friendName);
     Aresta* friendship = buscar_aresta(user, friendName, &ant);
@@ -133,7 +137,7 @@ void removeFriend(Grafo* G, Vertice* user){
         
     char toBeRemoved[MAX];
     printf("Digite o nome do amigo que deseja remover a amizade: ");
-    scanf("%[^\n]", toBeRemoved);
+    scanf("\n%[^\n]", toBeRemoved);
     Aresta* ant=NULL;
     Aresta* friendship = buscar_aresta(user, toBeRemoved, &ant);
     Vertice* otherUser = buscar_vert(G, toBeRemoved);
@@ -146,6 +150,27 @@ void removeFriend(Grafo* G, Vertice* user){
     }
 }
 
-void findTrueLove(Vertice *user){
-
+void findTrueLove(Grafo* G, Vertice *user){
+    Vertice* aux = G->vertices;
+    for(int i=0; i<G->numVertices; i++){
+        if(aux->usuario.id != user->usuario.id){
+            int afinidade = calculaAfinidade(aux, user);
+            if(afinidade==100){
+                printf("Você tem o perfil 100%% compatível com %s\n", aux->usuario.nome);
+                Aresta *ant;
+                if(buscar_aresta(user, aux->usuario.nome, &ant)==NULL){
+                    printf("Deseja adicionar como amigo?\n1 - SIM\n2 - NÃO\n");
+                    int op=0;
+                    while(op!=1 && op!=2){
+                        scanf("%d",&op);
+                    }
+                    if(op==1){
+                        inserir_aresta(G, user, aux);
+                        inserir_aresta(G, aux, user);
+                    }
+                }
+            }
+        }
+        aux = aux->prox;
+    }
 }

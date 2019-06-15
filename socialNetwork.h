@@ -18,5 +18,5 @@ void createAccount(Grafo* G);
 void addFriend(Grafo* G, Vertice* user);
 void removeFriend(Grafo* G, Vertice* user);
 void detectFalseFriends(Grafo *G, Vertice* user);
-
+void findTrueLove(Grafo* G, Vertice *user);
 #endif

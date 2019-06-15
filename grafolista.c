@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "grafolista.h"
+#include "fila.h"
 
 
 
@@ -25,8 +26,6 @@ Grafo *criar_grafo(){
 */
 void inserir_vertice(Grafo *G, Usuario novoUsuario){
     Vertice *V = (Vertice *) malloc(sizeof(Vertice));
-
-
     strcpy(V->usuario.nome, novoUsuario.nome);
     V->usuario.idade = novoUsuario.idade;
     strcpy(V->usuario.cidade, novoUsuario.cidade );
@@ -34,8 +33,7 @@ void inserir_vertice(Grafo *G, Usuario novoUsuario){
     strcpy(V->usuario.generoFilme, novoUsuario.generoFilme );
     strcpy(V->usuario.areaAtuacao, novoUsuario.areaAtuacao );
     strcpy(V->usuario.timeEsportivo, novoUsuario.timeEsportivo );
-
-
+    V->usuario.id = novoUsuario.id;
     G->numVertices++;
     V->primeiro_elem = NULL;
     V->ultimo_elem = NULL;
@@ -193,18 +191,27 @@ int contarArestas(Grafo* G)
  */
 void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved){
     Aresta* ant1=NULL,*ant2=NULL;
-
     Vertice* user2 = buscar_vert(G, toBeRemoved->usuarioAmigo.nome);
     Aresta* aresta2 = buscar_aresta(user2, user->usuario.nome, &ant2);
-    if(ant1 && toBeRemoved->prox){
-        ant1->prox = toBeRemoved->prox;
+    buscar_aresta(user, user2->usuario.nome, &ant1);
+    if(toBeRemoved && aresta2){
+        if(toBeRemoved->usuarioAmigo.id == user->primeiro_elem->usuarioAmigo.id){
+            user->primeiro_elem = user->primeiro_elem->prox;
+        }else{
+            if(toBeRemoved->prox)
+                ant1->prox = toBeRemoved->prox;
+        }
+        if(aresta2->usuarioAmigo.id == user2->primeiro_elem->usuarioAmigo.id){
+            user2->primeiro_elem = user2->primeiro_elem->prox;
+        }else{
+            if(aresta2->prox)
+                ant2->prox = aresta2->prox;
+        }
+        free(toBeRemoved);
+        free(aresta2);
+        user->num_arestas--;
+        user2->num_arestas--;
     }
-    if(ant2 && aresta2->prox){
-        ant2->prox = aresta2->prox;
-    }
-    free(toBeRemoved);
-    free(aresta2);
-    user->num_arestas--;
-    user2->num_arestas--;
     
 }
+

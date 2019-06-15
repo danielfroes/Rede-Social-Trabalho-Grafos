@@ -12,6 +12,7 @@
 #define __ADICIONAR_AMIGO__ 2
 #define __ENCONTRAR_FALSO_AMIGO__ 3
 #define __REMOVER_AMIZADE__ 4
+#define __ACHAR_AMOR__ 5
 
 void printMenu(Usuario user);
 
@@ -57,6 +58,8 @@ int main(int argc, char* argv[])
                 detectFalseFriends(G, user);
             }else if(menu == __REMOVER_AMIZADE__){
                 removeFriend(G, user);
+            }else if(menu == __ACHAR_AMOR__){
+                findTrueLove(G, user);
             }
         }
         else //usuario não logado
@@ -96,6 +99,7 @@ void printMenu(Usuario user)
         printf("2 - ADICIONAR UM AMIGO\n\n");
         printf("3 - ECONTRAR FALSAS AMIZADES\n\n");
         printf("4 - REMOVER AMIZADE\n\n");
+        printf("5 - ENCONTRAR AMOR VERDADEIRO\n\n");
     }
     else
     {  

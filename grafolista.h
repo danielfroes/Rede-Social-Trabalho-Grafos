@@ -21,6 +21,7 @@ struct _grafo {
 };
 
 struct _usuario{
+    int id;
     bool logged;
     char nome[MAX];
     int  idade;
@@ -55,4 +56,5 @@ float checarPlagio(Grafo *textoA, Grafo *textoB);
 int contarArestas(Grafo* G);
 Aresta* buscar_aresta(Vertice* V, char* nome, Aresta** ant);
 void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved);
+int calculaAfinidade(Vertice* a, Vertice* b);
 #endif
