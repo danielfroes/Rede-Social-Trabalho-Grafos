@@ -34,6 +34,8 @@ void inserir_vertice(Grafo *G, Usuario novoUsuario){
     strcpy(V->usuario.areaAtuacao, novoUsuario.areaAtuacao );
     strcpy(V->usuario.timeEsportivo, novoUsuario.timeEsportivo );
     V->usuario.id = novoUsuario.id;
+    V->usuario.nSolicitacoes=0;
+    V->usuario.solicitacoesAmizade = NULL;
     G->numVertices++;
     V->primeiro_elem = NULL;
     V->ultimo_elem = NULL;
@@ -215,3 +217,24 @@ void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved){
     
 }
 
+void destroiListaAdj(Aresta* primeiro){
+    Aresta* aux = primeiro;
+    while(aux){
+        Aresta* temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+}
+
+void destroiGrafo(Grafo* G){
+    Vertice *aux;
+    if(G->numVertices)
+        aux = G->vertices;
+    for(int i=0; i<G->numVertices; i++){
+        if(aux->num_arestas)
+            destroiListaAdj(aux->primeiro_elem);
+        Vertice* temp = aux;
+        aux = aux->prox;
+        free(temp); 
+    }
+}

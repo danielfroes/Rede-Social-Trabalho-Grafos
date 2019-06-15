@@ -24,12 +24,15 @@ struct _usuario{
     int id;
     bool logged;
     char nome[MAX];
+    char senha[MAX];
     int  idade;
     char cidade[MAX];
     char consoleFavorito[MAX];
     char generoFilme[MAX];
     char areaAtuacao[MAX];
     char timeEsportivo[MAX];
+    Vertice** solicitacoesAmizade;
+    int nSolicitacoes;
 };
 
 struct _aresta {
@@ -57,4 +60,5 @@ int contarArestas(Grafo* G);
 Aresta* buscar_aresta(Vertice* V, char* nome, Aresta** ant);
 void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved);
 int calculaAfinidade(Vertice* a, Vertice* b);
+void destroiGrafo(Grafo* G);
 #endif

@@ -50,12 +50,13 @@ Usuario* ReadUserFile()
         usersArray = (Usuario*)realloc(usersArray , nElem*sizeof(Usuario));
         usersArray[i].id = atoi(lineData[0]);
         strcpy(usersArray[i].nome, lineData[1]);
-        usersArray[i].idade = atoi(lineData[2]);
-        strcpy(usersArray[i].cidade, lineData[3]);
-        strcpy(usersArray[i].generoFilme, lineData[4]);
-        strcpy(usersArray[i].consoleFavorito, lineData[5]);
-        strcpy(usersArray[i].areaAtuacao, lineData[6]);
-        strcpy(usersArray[i].timeEsportivo, lineData[7]);
+        strcpy(usersArray[i].senha, lineData[2]);
+        usersArray[i].idade = atoi(lineData[3]);
+        strcpy(usersArray[i].cidade, lineData[4]);
+        strcpy(usersArray[i].generoFilme, lineData[5]);
+        strcpy(usersArray[i].consoleFavorito, lineData[6]);
+        strcpy(usersArray[i].areaAtuacao, lineData[7]);
+        strcpy(usersArray[i].timeEsportivo, lineData[8]);
         i++;
         nElem++;
     }
@@ -75,6 +76,7 @@ void saveNewUser(Usuario newUser)
     
     fprintf(f, "%d,", newUser.id);
     fprintf(f, "%s,", newUser.nome);
+    fprintf(f, "%s,", newUser.senha);
     fprintf(f, "%d,", newUser.idade);
     fprintf(f, "%s,", newUser.cidade);
     fprintf(f, "%s,", newUser.generoFilme);

@@ -9,10 +9,11 @@
 #define __CREATE_ACCOUNT__ 2
 
 #define __LOGOUT__ 1
-#define __ADICIONAR_AMIGO__ 2
-#define __ENCONTRAR_FALSO_AMIGO__ 3
-#define __REMOVER_AMIZADE__ 4
-#define __ACHAR_AMOR__ 5
+#define __VERIFICAR_SOLICITACOES__ 2
+#define __ADICIONAR_AMIGO__ 3
+#define __ENCONTRAR_FALSO_AMIGO__ 4
+#define __REMOVER_AMIZADE__ 5
+#define __ACHAR_AMOR__ 6
 
 void printMenu(Usuario user);
 
@@ -34,7 +35,7 @@ int main(int argc, char* argv[])
 
         printMenu(user->usuario);
         scanf("%hd", &menu);
-        //system("clear");
+        system("clear");
         
 
        
@@ -60,6 +61,8 @@ int main(int argc, char* argv[])
                 removeFriend(G, user);
             }else if(menu == __ACHAR_AMOR__){
                 findTrueLove(G, user);
+            }else if(menu==__VERIFICAR_SOLICITACOES__){
+                acceptFriendRequest(G, user);
             }
         }
         else //usuario não logado
@@ -96,10 +99,11 @@ void printMenu(Usuario user)
         printf(__DOTTED_LINE);
         printf("0 - SAIR DO PROGRAMA\n\n");
         printf("1 - LOGOUT\n\n");
-        printf("2 - ADICIONAR UM AMIGO\n\n");
-        printf("3 - ECONTRAR FALSAS AMIZADES\n\n");
-        printf("4 - REMOVER AMIZADE\n\n");
-        printf("5 - ENCONTRAR AMOR VERDADEIRO\n\n");
+        printf("2 - VERIFICAR SOLICITAÇÕES DE AMIZADE\n\n");
+        printf("3 - ADICIONAR UM AMIGO\n\n");
+        printf("4 - ECONTRAR FALSAS AMIZADES\n\n");
+        printf("5 - REMOVER AMIZADE\n\n");
+        printf("6 - ENCONTRAR AMOR VERDADEIRO\n\n");
     }
     else
     {  
