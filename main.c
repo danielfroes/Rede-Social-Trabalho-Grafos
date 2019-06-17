@@ -36,7 +36,6 @@ int main(int argc, char* argv[])
         printMenu(user->usuario);
         scanf("%hd", &menu);
         system("clear");
-        
 
        
         if(menu == __EXIT__){
@@ -53,7 +52,7 @@ int main(int argc, char* argv[])
                 logout(user);
             }
             else if(menu == __ADICIONAR_AMIGO__){
-                imprime_grafo(G);
+                //imprime_grafo(G);
                 addFriend(G, user);
             }else if(menu == __ENCONTRAR_FALSO_AMIGO__){
                 detectFalseFriends(G, user);

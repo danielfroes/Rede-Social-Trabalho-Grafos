@@ -31,9 +31,7 @@ char** split(char* str, char*  divider )
 }
 
 
-
-Usuario* ReadUserFile()
-{
+Usuario* ReadUserFile(){
     char line[500];
     char** lineData;
     Usuario* usersArray = (Usuario*) malloc(sizeof(Usuario));

@@ -10,10 +10,8 @@
 
 #define END_OF_ARRAY "\0"
 #define __USERDATA_FILE_NAME__ "database/userData.csv"
-
+#define __FRIENDSHIPS_FILE_NAME__ "database/friendship.txt"
 Usuario* ReadUserFile();
 void saveNewUser(Usuario user);
-
-
 
 #endif

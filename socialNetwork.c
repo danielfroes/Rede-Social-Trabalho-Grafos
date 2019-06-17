@@ -1,8 +1,7 @@
 #include "socialNetwork.h"
 
 
-Grafo* loadSocialNetwork() //**Load no Grafo de amizades
-{
+Grafo* loadSocialNetwork(){
     Usuario* usersArray;
     Grafo* G;
 
@@ -10,8 +9,7 @@ Grafo* loadSocialNetwork() //**Load no Grafo de amizades
     
     usersArray = ReadUserFile();
 
-    for(int i=0; strcmp(usersArray[i].nome,END_OF_ARRAY); i++)
-    {
+    for(int i=0; strcmp(usersArray[i].nome,END_OF_ARRAY); i++){
         inserir_vertice(G, usersArray[i]);
     }
 
@@ -20,8 +18,7 @@ Grafo* loadSocialNetwork() //**Load no Grafo de amizades
     return G;
 }
 
-Vertice* login(Grafo* G) ///** adicionar senhas //** bug q não ta dando login duas vezes
-{
+Vertice* login(Grafo* G){
     char username[MAX]; 
     char senha[MAX];
     Vertice *user;
@@ -50,13 +47,11 @@ Vertice* login(Grafo* G) ///** adicionar senhas //** bug q não ta dando login d
     return user;
 }
 
-void logout(Vertice *user)
-{
+void logout(Vertice *user){
     user->usuario.logged = false;
 }
 
-void createAccount(Grafo* G) //** adicionar a checagem para ver usernames repetidos
-{
+void createAccount(Grafo* G){
     Usuario user;
     bool validName = false;
     printf("\n\n");
@@ -93,6 +88,7 @@ void createAccount(Grafo* G) //** adicionar a checagem para ver usernames repeti
     
     G = loadSocialNetwork();
 }
+
 
 /*
     Função addFriend: Busca usuário por nome e adiciona uma solicitação de amizade no usuário buscado
@@ -145,6 +141,7 @@ void acceptFriendRequest(Grafo* G, Vertice* user){
                 inserir_aresta(G, user->usuario.solicitacoesAmizade[i], user);
             }    
         }
+        user->usuario.nSolicitacoes=0;
         free(user->usuario.solicitacoesAmizade);
     }else{
         printf("Você não tem solicitações de amizade!\n");
@@ -160,9 +157,11 @@ void acceptFriendRequest(Grafo* G, Vertice* user){
  */
 void detectFalseFriends(Grafo *G, Vertice* user){
     Aresta* aux = user->primeiro_elem;
+    int nFalsos=0;
     if(user->num_arestas){
         for(int i=0; i<user->num_arestas; i++){
             if(aux && aux->grauAfinidade < 20){
+                nFalsos++;
                 printf("Infelizmente o usuário %s tem baixa afinidade com você =(\n", aux->usuarioAmigo.nome);
                 printf("Deseja remover amizade?\n1 - SIM\n2 - NÂO\n");
                 int opcao=0;
@@ -178,6 +177,9 @@ void detectFalseFriends(Grafo *G, Vertice* user){
         }
     }else{
         printf("Parabéns! Você não tem amigos!\n");
+    }
+    if(!nFalsos && user->num_arestas){
+        printf("Você não tem falsas amizades!\n");
     }
 }
 
@@ -223,7 +225,7 @@ void findTrueLove(Grafo* G, Vertice *user){
         //Calcular apenas com usuários diferentes
         if(aux->usuario.id != user->usuario.id){
             int afinidade = calculaAfinidade(aux, user);
-            if(afinidade==100){
+            if(afinidade>=80){
                 printf("Você tem o perfil 100%% compatível com %s\n", aux->usuario.nome);
                 Aresta *ant;
                 lovesFound++;
@@ -252,3 +254,4 @@ void findTrueLove(Grafo* G, Vertice *user){
         printf("Infelizmente não encontramos nenhum perfil 100%% compatível com o seu =(\n");
     }
 }
+

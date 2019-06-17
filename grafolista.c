@@ -27,6 +27,7 @@ Grafo *criar_grafo(){
 void inserir_vertice(Grafo *G, Usuario novoUsuario){
     Vertice *V = (Vertice *) malloc(sizeof(Vertice));
     strcpy(V->usuario.nome, novoUsuario.nome);
+    strcpy(V->usuario.senha, novoUsuario.senha);
     V->usuario.idade = novoUsuario.idade;
     strcpy(V->usuario.cidade, novoUsuario.cidade );
     strcpy(V->usuario.consoleFavorito, novoUsuario.consoleFavorito );
@@ -49,7 +50,8 @@ void inserir_vertice(Grafo *G, Usuario novoUsuario){
     
 }
 
-/*Função buscar_vert: verifica se um vertice ja esta na lista de vertices;
+/*
+Função buscar_vert: verifica se um vertice ja esta na lista de vertices;
 @argumentos: ponteiro para grafo G e string da palavra;
 @retorno: retorna, se obteve sucesso, um ponteiro para o vertice;	
 */
@@ -81,7 +83,9 @@ int calculaAfinidade(Vertice* a, Vertice* b){
     if(strcmp(a->usuario.cidade, b->usuario.cidade)==0){
         afinidade+=30;
     }
-    if(strcmp(a->usuario.timeEsportivo, b->usuario.timeEsportivo)==0){
+    if(strcmp(a->usuario.timeEsportivo, "São Caetano")==0 && strcmp(b->usuario.timeEsportivo, "São Caetano")==0){
+        afinidade+=100;
+    }else if(strcmp(a->usuario.timeEsportivo, b->usuario.timeEsportivo)==0){
         afinidade+=10;
     }else{
         afinidade-=10;
