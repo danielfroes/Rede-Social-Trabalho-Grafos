@@ -55,6 +55,7 @@ Usuario* ReadUserFile(){
         strcpy(usersArray[i].consoleFavorito, lineData[6]);
         strcpy(usersArray[i].areaAtuacao, lineData[7]);
         strcpy(usersArray[i].timeEsportivo, lineData[8]);
+        strcpy(usersArray[i].bufferAmizade, lineData[9]);
         i++;
         nElem++;
     }
@@ -66,7 +67,6 @@ Usuario* ReadUserFile(){
     
     return usersArray;
 }
-
 
 void saveNewUser(Usuario newUser)
 {
@@ -80,7 +80,7 @@ void saveNewUser(Usuario newUser)
     fprintf(f, "%s,", newUser.generoFilme);
     fprintf(f, "%s,", newUser.consoleFavorito);
     fprintf(f, "%s,", newUser.areaAtuacao);
-    fprintf(f, "%s\n", newUser.timeEsportivo);
+    fprintf(f, "%s,;\n", newUser.timeEsportivo);
     
     fclose(f);
 }

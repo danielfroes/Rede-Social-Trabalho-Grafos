@@ -31,6 +31,7 @@ struct _usuario{
     char generoFilme[MAX];
     char areaAtuacao[MAX];
     char timeEsportivo[MAX];
+    char bufferAmizade[MAX*MAX];
     Vertice** solicitacoesAmizade;
     int nSolicitacoes;
 };

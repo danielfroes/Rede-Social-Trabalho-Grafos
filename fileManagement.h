@@ -13,5 +13,6 @@
 #define __FRIENDSHIPS_FILE_NAME__ "database/friendship.txt"
 Usuario* ReadUserFile();
 void saveNewUser(Usuario user);
-
+char** split(char* str, char*  divider );
+void saveFriendShips(Vertice* user);
 #endif
