@@ -41,7 +41,7 @@ Usuario* ReadUserFile(){
     fgets(line, 500, f); // pula a linha com os nomes dos campos;
 
     while(fgets(line, 500, f)!= NULL)
-    {
+    {  
 
         lineData = split(line, ",\n");
 

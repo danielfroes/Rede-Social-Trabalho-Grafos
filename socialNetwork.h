@@ -10,6 +10,11 @@
 #define __DOTTED_LINE "---------------------------------------------\n\n"
 
 
+#define _SUGGEST_FRIEND_THRESHOLD 40
+#define _LOVE_THRESHOLD_ 80
+#define _FALSE_FRIEND_THRESHOLD_ 20
+
+
 
 Grafo* loadSocialNetwork();
 Vertice* login(Grafo* G);
@@ -20,4 +25,7 @@ void removeFriend(Grafo* G, Vertice* user);
 void detectFalseFriends(Grafo *G, Vertice* user);
 void findTrueLove(Grafo* G, Vertice *user);
 void acceptFriendRequest(Grafo* G, Vertice* user);
+float calculaAfinidade(Grafo* G, Vertice* a, Vertice* b);
+void suggestFriends(Grafo* G, Vertice* user);
+void sendFriendRequest(Vertice* user, Vertice* requested);
 #endif

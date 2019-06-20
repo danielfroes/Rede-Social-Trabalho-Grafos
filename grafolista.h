@@ -6,9 +6,12 @@
 #define false 0
 #define true 1
 
+#define _NAO_VISITADO 0
+#define _VISITADO_ 1
+#define _COMPLETO_ 2
+
+
 typedef int bool;
-
-
 typedef struct _aresta Aresta;
 typedef struct _vertice Vertice;
 typedef struct _grafo Grafo;
@@ -37,7 +40,7 @@ struct _usuario{
 
 struct _aresta {
     Usuario usuarioAmigo;
-    int grauAfinidade;
+    float grauAfinidade;
     struct _aresta *prox;
 };
 
@@ -47,8 +50,8 @@ struct _vertice {
 	struct _vertice *prox;
     Aresta *primeiro_elem;
     Aresta *ultimo_elem;
+    int status;
 };
-
 
 Grafo *criar_grafo();
 void inserir_vertice(Grafo *G, Usuario novoUsuario);
@@ -59,6 +62,6 @@ float checarPlagio(Grafo *textoA, Grafo *textoB);
 int contarArestas(Grafo* G);
 Aresta* buscar_aresta(Vertice* V, char* nome, Aresta** ant);
 void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved);
-int calculaAfinidade(Vertice* a, Vertice* b);
 void destroiGrafo(Grafo* G);
+int bfs(Grafo* G, Vertice* startVertex, int searchId);
 #endif
