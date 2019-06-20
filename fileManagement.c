@@ -55,7 +55,6 @@ Usuario* ReadUserFile(){
         strcpy(usersArray[i].consoleFavorito, lineData[6]);
         strcpy(usersArray[i].areaAtuacao, lineData[7]);
         strcpy(usersArray[i].timeEsportivo, lineData[8]);
-        strcpy(usersArray[i].bufferAmizade, lineData[9]);
         i++;
         nElem++;
     }

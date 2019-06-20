@@ -21,20 +21,6 @@ Grafo *criar_grafo(){
 	return G;
 }
 
-void loadAresta(Grafo* G, Vertice* user, char* buffer){
-    char** nomesAmizades = split(buffer, ";\n");
-    int i=0;
-    while(nomesAmizades[i]){
-        Vertice* aux = buscar_vert(G, nomesAmizades[i]);
-        inserir_aresta(G, aux, user);
-        inserir_aresta(G, user, aux);
-        i++;
-        free(aux);
-    }
-    free(nomesAmizades);
-    
-}
-
 /*Função inserir_vertice: insere uma nova palavra na lista de vertices;
 @argumentos: ponteiro para grafo G e string da palavra;
 @retorno: void;	
