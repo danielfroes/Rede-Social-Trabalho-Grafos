@@ -90,6 +90,38 @@ void createAccount(Grafo* G){
 }
 
 
+void suggestFriends(Grafo* G, Vertice* user)
+{
+    float auxNota, multiplicador;
+    Vertice* auxV = G->vertices;
+    printf("AMIGOS SUGERIDOS PARA SEU PERFIL:\n\n");
+
+    for(int i = 0; i  < G->numVertices; i++)
+    {
+        
+        if(auxV->usuario.id != user->usuario.id)
+        {
+            auxNota = calculaAfinidade(G, auxV, user);
+
+            printf("Usuario: %s  %f\n", auxV->usuario.nome, auxNota);
+            if(auxNota >= _SUGGEST_FRIEND_THRESHOLD)
+            {
+                printf("Deseja adicionar como amigo?\n1 - SIM\n2 - NÃO\n");
+                int op=0;
+                while(op!=1 && op!=2){
+                    scanf("%d",&op);
+                }
+                if(op==1){
+                    sendFriendRequest(user, auxV);
+                }
+            }
+        }
+        auxV = auxV->prox;
+    }
+}
+
+
+
 /*
     Função addFriend: Busca usuário por nome e adiciona uma solicitação de amizade no usuário buscado
     Grafo* G -> endereço do grafo que contém a rede social
@@ -160,7 +192,7 @@ void detectFalseFriends(Grafo *G, Vertice* user){
     int nFalsos=0;
     if(user->num_arestas){
         for(int i=0; i<user->num_arestas; i++){
-            if(aux && aux->grauAfinidade < 20){
+            if(aux && aux->grauAfinidade < _FALSE_FRIEND_THRESHOLD_){
                 nFalsos++;
                 printf("Infelizmente o usuário %s tem baixa afinidade com você =(\n", aux->usuarioAmigo.nome);
                 printf("Deseja remover amizade?\n1 - SIM\n2 - NÂO\n");
@@ -224,8 +256,8 @@ void findTrueLove(Grafo* G, Vertice *user){
     for(int i=0; i<G->numVertices; i++){
         //Calcular apenas com usuários diferentes
         if(aux->usuario.id != user->usuario.id){
-            int afinidade = calculaAfinidade(aux, user);
-            if(afinidade>=80){
+            float afinidade = calculaAfinidade(G, aux, user);
+            if(afinidade>=_LOVE_THRESHOLD_){
                 printf("Você tem o perfil 100%% compatível com %s\n", aux->usuario.nome);
                 Aresta *ant;
                 lovesFound++;
@@ -237,11 +269,7 @@ void findTrueLove(Grafo* G, Vertice *user){
                         scanf("%d",&op);
                     }
                     if(op==1){
-                        //Envio de solicitação de amizade
-                        aux->usuario.nSolicitacoes++;
-                        aux->usuario.solicitacoesAmizade = realloc(aux->usuario.solicitacoesAmizade, sizeof(Vertice *)*aux->usuario.nSolicitacoes);
-                        aux->usuario.solicitacoesAmizade[aux->usuario.nSolicitacoes-1] = user;
-                        printf("Solicitação de amizade enviada!\n");
+                        sendFriendRequest(user, aux);
                     }
                 }else{
                     printf("Você e %s já são amigos!\n", aux->usuario.nome);
@@ -255,3 +283,46 @@ void findTrueLove(Grafo* G, Vertice *user){
     }
 }
 
+void sendFriendRequest(Vertice* user, Vertice* requested)
+{
+    //Envio de solicitação de amizade
+    requested->usuario.nSolicitacoes++;
+    requested->usuario.solicitacoesAmizade = realloc(requested->usuario.solicitacoesAmizade, sizeof(Vertice *)*requested->usuario.nSolicitacoes);
+    requested->usuario.solicitacoesAmizade[requested->usuario.nSolicitacoes-1] = user;
+    printf("Solicitação de amizade enviada!\n");
+}
+
+/*
+    Função calculaAfinidade: calcula o grau de afinidade entre 2 usuários de acordo com
+    os interesses passados
+    Parâmetros:
+    Vertice* a -> vértice que contém o primeiro usuário
+    Vertice* b -> vérice que contém o segundo usuários
+    Retorno:
+    int afinidade -> grau de afinidade calculado
+*/
+float calculaAfinidade(Grafo* G, Vertice* a, Vertice* b){
+    int afinidade = 0;
+    if(abs(a->usuario.idade - b->usuario.idade)<=6){
+        afinidade+=10;
+    }
+    if(strcmp(a->usuario.cidade, b->usuario.cidade)==0){
+        afinidade+=30;
+    }
+    if(strcmp(a->usuario.timeEsportivo, "São Caetano")==0 && strcmp(b->usuario.timeEsportivo, "São Caetano")==0){
+        afinidade+=100;
+    }else if(strcmp(a->usuario.timeEsportivo, b->usuario.timeEsportivo)==0){
+        afinidade+=10;
+    }else{
+        afinidade-=10;
+    }
+    if(strcmp(a->usuario.areaAtuacao, b->usuario.areaAtuacao)==0){
+        afinidade+=30;
+    }
+    if(strcmp(a->usuario.generoFilme, b->usuario.generoFilme)==0){
+        afinidade+=20;
+    }
+
+
+    return afinidade/(float)bfs(G, b, a->usuario.id);;
+}

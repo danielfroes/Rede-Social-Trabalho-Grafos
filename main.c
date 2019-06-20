@@ -13,7 +13,8 @@
 #define __ADICIONAR_AMIGO__ 3
 #define __ENCONTRAR_FALSO_AMIGO__ 4
 #define __REMOVER_AMIZADE__ 5
-#define __ACHAR_AMOR__ 6
+#define __SUGESTAO_AMIZADE__ 6
+#define __ACHAR_AMOR__ 7
 
 void printMenu(Usuario user);
 
@@ -28,14 +29,12 @@ int main(int argc, char* argv[])
     Vertice* user = malloc(sizeof(user));
     user->usuario.logged = false;
     
-
-
     while(true){
 
 
         printMenu(user->usuario);
         scanf("%hd", &menu);
-        system("clear");
+        // system("clear");
 
        
         if(menu == __EXIT__){
@@ -52,17 +51,27 @@ int main(int argc, char* argv[])
                 logout(user);
             }
             else if(menu == __ADICIONAR_AMIGO__){
-                //imprime_grafo(G);
                 addFriend(G, user);
-            }else if(menu == __ENCONTRAR_FALSO_AMIGO__){
+            }
+            else if(menu == __ENCONTRAR_FALSO_AMIGO__){
                 detectFalseFriends(G, user);
-            }else if(menu == __REMOVER_AMIZADE__){
+            }
+            else if(menu == __REMOVER_AMIZADE__){
                 removeFriend(G, user);
-            }else if(menu == __ACHAR_AMOR__){
+            }
+            else if(menu == __ACHAR_AMOR__){
                 findTrueLove(G, user);
-            }else if(menu==__VERIFICAR_SOLICITACOES__){
+            }
+            else if(menu == __SUGESTAO_AMIZADE__){
+                suggestFriends(G, user);
+            }
+            else if(menu==__VERIFICAR_SOLICITACOES__){
                 acceptFriendRequest(G, user);
             }
+            else if(menu == 8) {
+                imprime_grafo(G);
+            }
+            
         }
         else //usuario não logado
         {
@@ -102,7 +111,8 @@ void printMenu(Usuario user)
         printf("3 - ADICIONAR UM AMIGO\n\n");
         printf("4 - ECONTRAR FALSAS AMIZADES\n\n");
         printf("5 - REMOVER AMIZADE\n\n");
-        printf("6 - ENCONTRAR AMOR VERDADEIRO\n\n");
+        printf("6 - SUGESTÃO DE AMIZADES\n\n");
+        printf("7 - ENCONTRAR AMOR VERDADEIRO\n\n");
     }
     else
     {  

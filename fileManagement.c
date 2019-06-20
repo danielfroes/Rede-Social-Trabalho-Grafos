@@ -41,7 +41,7 @@ Usuario* ReadUserFile(){
     fgets(line, 500, f); // pula a linha com os nomes dos campos;
 
     while(fgets(line, 500, f)!= NULL)
-    {
+    {  
 
         lineData = split(line, ",\n");
 
@@ -55,7 +55,6 @@ Usuario* ReadUserFile(){
         strcpy(usersArray[i].consoleFavorito, lineData[6]);
         strcpy(usersArray[i].areaAtuacao, lineData[7]);
         strcpy(usersArray[i].timeEsportivo, lineData[8]);
-        strcpy(usersArray[i].bufferAmizade, lineData[9]);
         i++;
         nElem++;
     }

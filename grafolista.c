@@ -4,6 +4,7 @@
 #include "grafolista.h"
 #include "fila.h"
 #include "fileManagement.h"
+#include "socialNetwork.h"
 
 
 
@@ -81,38 +82,7 @@ Vertice *buscar_vert(Grafo *G, char nomeUsuario[]) {
     return NULL;	
 }
 
-/*
-    Função calculaAfinidade: calcula o grau de afinidade entre 2 usuários de acordo com
-    os interesses passados
-    Parâmetros:
-    Vertice* a -> vértice que contém o primeiro usuário
-    Vertice* b -> vérice que contém o segundo usuários
-    Retorno:
-    int afinidade -> grau de afinidade calculado
-*/
-int calculaAfinidade(Vertice* a, Vertice* b){
-    int afinidade = 0;
-    if(abs(a->usuario.idade - b->usuario.idade)<=6){
-        afinidade+=10;
-    }
-    if(strcmp(a->usuario.cidade, b->usuario.cidade)==0){
-        afinidade+=30;
-    }
-    if(strcmp(a->usuario.timeEsportivo, "São Caetano")==0 && strcmp(b->usuario.timeEsportivo, "São Caetano")==0){
-        afinidade+=100;
-    }else if(strcmp(a->usuario.timeEsportivo, b->usuario.timeEsportivo)==0){
-        afinidade+=10;
-    }else{
-        afinidade-=10;
-    }
-    if(strcmp(a->usuario.areaAtuacao, b->usuario.areaAtuacao)==0){
-        afinidade+=30;
-    }
-    if(strcmp(a->usuario.generoFilme, b->usuario.generoFilme)==0){
-        afinidade+=20;
-    }
-    return afinidade;
-}
+
 
 /*Função inserir_aresta: insere uma palavra na lista de arestas de um vertice;
 @argumentos: ponteiro para grafo G, string da palavra vertice e string da palavra aresta;
@@ -122,7 +92,7 @@ void inserir_aresta(Grafo *G, Vertice* Va, Vertice* Vb){
     if(Va != NULL && Vb != NULL){
         Aresta *A = (Aresta*) malloc(sizeof(Aresta));
         A->usuarioAmigo = Vb->usuario;
-        A->grauAfinidade = calculaAfinidade(Va, Vb);
+        A->grauAfinidade = calculaAfinidade(G,Va, Vb);
         Va->num_arestas++;
         if(Va->primeiro_elem != NULL){
             A->prox = Va->ultimo_elem->prox;
@@ -234,6 +204,46 @@ void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved){
         user2->num_arestas--;
     }
     
+}
+
+
+
+
+int bfs(Grafo* G, Vertice* startVertex, int searchId)//**  testar função 
+{ 
+    int nArestas, cnt = 0;
+    
+    Fila* q = criaFila();
+
+    startVertex->status = _VISITADO_;
+    enqueue(q, startVertex);
+    
+    while(q->ini != NULL)
+    {   
+        
+        Vertice* auxV = dequeue(q);
+        nArestas = auxV->num_arestas;
+        Aresta* auxA = auxV->primeiro_elem;
+        cnt++;
+        for(int i = 0; i < nArestas; i++)
+        {    
+            Vertice* tempV = buscar_vert(G, auxA->usuarioAmigo.nome);
+            if(tempV->usuario.id == searchId)
+            {
+                return 1/cnt;
+            }     
+            if(tempV->status == _NAO_VISITADO)
+            {
+                enqueue(q, tempV);
+                tempV->status == _VISITADO_;
+            }
+            auxA = auxA->prox;
+        }
+
+      
+    }
+
+    return cnt;
 }
 
 void destroiListaAdj(Aresta* primeiro){
