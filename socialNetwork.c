@@ -1,6 +1,10 @@
 #include "socialNetwork.h"
 
-
+/*
+    Função loadSocialNetwork: Lê arquivos que contém Vertices e Arestas e carrega-os no grafo
+    Retorno:
+    Grafo* G -> endereço do grafo que contém a rede social
+ */
 Grafo* loadSocialNetwork(){
     Usuario* usersArray;
     Grafo* G;
@@ -12,12 +16,19 @@ Grafo* loadSocialNetwork(){
     for(int i=0; strcmp(usersArray[i].nome,END_OF_ARRAY); i++){
         inserir_vertice(G, usersArray[i]);
     }
-
+    readFriendships(G);
     free(usersArray);
 
     return G;
 }
 
+/*
+    Função login: Lê usuário e senha e realiza login se ambos estiverem corretos
+    Parâmetros:
+    Grafo* G -> endereço do grafo que contém a rede
+    Retorno:
+    Vertice* user -> vertice contendo o usuário encontrado
+ */
 Vertice* login(Grafo* G){
     char username[MAX]; 
     char senha[MAX];
@@ -47,20 +58,28 @@ Vertice* login(Grafo* G){
     return user;
 }
 
+/*
+    Função logout: Realiza logout do usuário
+    Parâmetros:
+    Vertice* user -> usuário que realiza logout
+ */
 void logout(Vertice *user){
     user->usuario.logged = false;
 }
 
+/*
+    Função createAccount: Registra um novo usuário na rede e salva no csv de usuários7
+    Parâmetros:
+    Grafo* G-> endereço do grafo que contém a rede
+ */
 void createAccount(Grafo* G){
     Usuario user;
     bool validName = false;
     printf("\n\n");
-    while(!validName)
-    {
+    while(!validName){
+        //Usuário utilizado como chave primária
         printf("Digite seu username: "); scanf(" %[^\n]s", user.nome);
-
         if(buscar_vert(G, user.nome) == NULL){
-  
             validName = true;
         }
         else{
@@ -69,55 +88,59 @@ void createAccount(Grafo* G){
 
         }
     }
+    //Entrada dos dados
     printf("\n\nDigite sua senha: "); scanf("%s", user.senha);
-
     printf("\n\nDigite sua idade: "); scanf("%d", &user.idade);
-
     printf("\n\nDigite sua cidade: "); scanf(" %[^\n]s", user.cidade);
-
     printf("\n\nDigite seu gênero de filme favorito: "); scanf(" %[^\n]s", user.generoFilme);
-
     printf("\n\nDigite seu console de Video Game favorito: "); scanf(" %[^\n]s", user.consoleFavorito);
-    
     printf("\n\nDigite sua área de atuação profissional: "); scanf(" %[^\n]s", user.areaAtuacao);
-    
     printf("\nDigite seu time: "); scanf(" %[^\n]s", user.timeEsportivo);
+    //Id = número atual de vértices
     user.id = G->numVertices;
     G->numVertices++;
+    //Escrita do novo usuário no arquivo
     saveNewUser(user);
-    
+
     G = loadSocialNetwork();
 }
 
-
+/*
+    Função suggestFriends: Procura usuários com nível de afinidade acima de 40 e sugere como amigos
+    Parâmetros:
+    Grafo* G-> endereço do grafo que contém a rede social
+    Vertice* user -> usuário logado 
+ */
 void suggestFriends(Grafo* G, Vertice* user)
 {
     float auxNota, multiplicador;
     Vertice* auxV = G->vertices;
     printf("AMIGOS SUGERIDOS PARA SEU PERFIL:\n\n");
-
-    for(int i = 0; i  < G->numVertices; i++)
-    {
-        
-        if(auxV->usuario.id != user->usuario.id)
-        {
-            auxNota = calculaAfinidade(G, auxV, user);
-
-            printf("Usuario: %s  %f\n", auxV->usuario.nome, auxNota);
-            if(auxNota >= _SUGGEST_FRIEND_THRESHOLD)
-            {
-                printf("Deseja adicionar como amigo?\n1 - SIM\n2 - NÃO\n");
-                int op=0;
-                while(op!=1 && op!=2){
-                    scanf("%d",&op);
+    //Sugestão é primeiramente feita usando uma bfs, caso não encontre sugestões
+    //Solução sequancial  é tentada
+    if(!bfs(G, user)){ 
+            for(int i = 0; i  < G->numVertices; i++) {
+                if(auxV->usuario.id != user->usuario.id)
+                {
+                    auxNota = calculaAfinidade(G, auxV, user);
+                    Aresta* ant;
+                    //Caso não sejam amigos e a afinidade seja maior que 40
+                    if(auxNota >= _SUGGEST_FRIEND_THRESHOLD && !buscar_aresta(user, auxV->usuario.nome, &ant)){
+                        printf("Usuario: %s  %f\n", auxV->usuario.nome, auxNota);
+                        printf("Deseja adicionar como amigo?\n1 - SIM\n2 - NÃO\n");
+                        int op=0;
+                        while(op!=1 && op!=2){ //Leitura de opção válida
+                            scanf("%d",&op);
+                        }
+                        if(op==1){
+                            sendFriendRequest(user, auxV);
+                        }
+                    }
                 }
-                if(op==1){
-                    sendFriendRequest(user, auxV);
-                }
-            }
+                auxV = auxV->prox;
         }
-        auxV = auxV->prox;
     }
+    
 }
 
 
@@ -139,12 +162,8 @@ void addFriend(Grafo* G, Vertice* user){
     }
     Aresta* ant=NULL;
     Aresta* friendship = buscar_aresta(user, friendName, &ant);
-    if(friend && !friendship){ //Caso usuário exista e usuário logado e buscado não sejam amigos
-        friend->usuario.nSolicitacoes++;
-        friend->usuario.solicitacoesAmizade = realloc(friend->usuario.solicitacoesAmizade, sizeof(Vertice *)*friend->usuario.nSolicitacoes);
-         //Adiciona o usuário atual no vetor de usuários que realizaram solicitação
-        friend->usuario.solicitacoesAmizade[friend->usuario.nSolicitacoes-1] = user;
-        printf("Solicitação de amizade enviada!\n");
+    if(friend && !friendship){ //Caso usuário exista e usuário logado e buscado não sejam amigos    
+        sendFriendRequest(user, friend);
     }else if(!friend){
         printf("Usuário não encontrado!\n");
     }else if(friendship){
@@ -284,9 +303,17 @@ void findTrueLove(Grafo* G, Vertice *user){
 }
 
 void sendFriendRequest(Vertice* user, Vertice* requested)
-{
+{  /*
+    for(int i=0;i<requested->usuario.nSolicitacoes; i++){
+        //Checa para duplas solicitações
+        if(requested->usuario.solicitacoesAmizade[i]->usuario.id == user->usuario.id){
+            printf("Você já enviou uma solicitação para este usuário!\n");
+            return;
+        }
+    }*/
     //Envio de solicitação de amizade
-    requested->usuario.nSolicitacoes++;
+    if(requested->usuario.solicitacoesAmizade)
+        requested->usuario.nSolicitacoes++;
     requested->usuario.solicitacoesAmizade = realloc(requested->usuario.solicitacoesAmizade, sizeof(Vertice *)*requested->usuario.nSolicitacoes);
     requested->usuario.solicitacoesAmizade[requested->usuario.nSolicitacoes-1] = user;
     printf("Solicitação de amizade enviada!\n");
@@ -323,6 +350,6 @@ float calculaAfinidade(Grafo* G, Vertice* a, Vertice* b){
         afinidade+=20;
     }
 
-
-    return afinidade/(float)bfs(G, b, a->usuario.id);;
+    return (float)afinidade;
+    //return afinidade/(float)bfs(G, b, a->usuario.id);;
 }

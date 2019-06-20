@@ -50,7 +50,6 @@ struct _vertice {
 	struct _vertice *prox;
     Aresta *primeiro_elem;
     Aresta *ultimo_elem;
-    int status;
 };
 
 Grafo *criar_grafo();
@@ -63,5 +62,5 @@ int contarArestas(Grafo* G);
 Aresta* buscar_aresta(Vertice* V, char* nome, Aresta** ant);
 void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved);
 void destroiGrafo(Grafo* G);
-int bfs(Grafo* G, Vertice* startVertex, int searchId);
+int bfs(Grafo* G, Vertice* startVertex);
 #endif

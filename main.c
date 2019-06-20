@@ -88,7 +88,8 @@ int main(int argc, char* argv[])
   
 
     }
-    free(G);
+    storeFriendships(G);
+    destroiGrafo(G);
  
 }
 

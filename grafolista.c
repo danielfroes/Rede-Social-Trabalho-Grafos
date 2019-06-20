@@ -172,12 +172,14 @@ void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved){
     Aresta* aresta2 = buscar_aresta(user2, user->usuario.nome, &ant2);
     buscar_aresta(user, user2->usuario.nome, &ant1);
     if(toBeRemoved && aresta2){
+        //Remove do início
         if(toBeRemoved->usuarioAmigo.id == user->primeiro_elem->usuarioAmigo.id){
             user->primeiro_elem = user->primeiro_elem->prox;
         }else{
-            if(toBeRemoved->prox)
+            if(toBeRemoved->prox) //Remove do meio
                 ant1->prox = toBeRemoved->prox;
         }
+        //Processo repetido para segundo usuário
         if(aresta2->usuarioAmigo.id == user2->primeiro_elem->usuarioAmigo.id){
             user2->primeiro_elem = user2->primeiro_elem->prox;
         }else{
@@ -192,46 +194,62 @@ void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved){
     
 }
 
-
-
-
-int bfs(Grafo* G, Vertice* startVertex, int searchId)//**  testar função 
-{ 
+/*
+    Função bfs: realiza uma busca em largura no grafo dado o vértice de início
+    Parâmetros:
+    Grafo* G -> endereço do grafo que contém a rede social
+    Vertice* startVertex -> vértice inicial
+    Retorno:
+    int cnt -> número de vértices encontrados
+ */
+int bfs(Grafo* G, Vertice* startVertex){ 
     int nArestas, cnt = 0;
     
     Fila* q = criaFila();
+    //Vetor de visitados
+    int* visitados = calloc(G->numVertices, sizeof(int));
 
-    startVertex->status = _VISITADO_;
+    visitados[startVertex->usuario.id] = _VISITADO_;
     enqueue(q, startVertex);
-    
-    while(q->ini != NULL)
-    {   
-        
-        Vertice* auxV = dequeue(q);
-        nArestas = auxV->num_arestas;
-        Aresta* auxA = auxV->primeiro_elem;
-        cnt++;
-        for(int i = 0; i < nArestas; i++)
-        {    
-            Vertice* tempV = buscar_vert(G, auxA->usuarioAmigo.nome);
-            if(tempV->usuario.id == searchId)
-            {
-                return 1/cnt;
-            }     
-            if(tempV->status == _NAO_VISITADO)
-            {
-                enqueue(q, tempV);
-                tempV->status == _VISITADO_;
+    while (q->total){
+        Vertice* aux = dequeue(q);
+
+        for(int i=0; i<aux->num_arestas; i++){
+            Aresta* auxA = aux->primeiro_elem;
+            if(visitados[auxA->usuarioAmigo.id]==_NAO_VISITADO){
+                visitados[auxA->usuarioAmigo.id] = _VISITADO_;
+                //Busca do vértice que contém o nome do vértice adjacente
+                Vertice* temp = buscar_vert(G, auxA->usuarioAmigo.nome);
+                enqueue(q, buscar_vert(G, temp->usuario.nome));
+                Aresta* ant;
+                //Sugetão de amizade é feita caso grau de afinidade seja maior ou igual que 40
+                //e os usuários não sejam amigos ainda
+                if(calculaAfinidade(G, startVertex, temp)>=40 && !buscar_aresta(startVertex, temp->usuario.nome, &ant)){
+                    cnt++;
+                    printf("O usuário %s tem afinidade com você\nDeseja adicioná-lo?\n1 - SIM\n2 - NÃO", temp->usuario.nome);
+                    int op=0;
+                    while (op!=1 && op!=2){
+                        scanf("%d", &op);
+                    }
+                    if(op==1){
+                        sendFriendRequest(startVertex, temp);
+                    }
+                    
+                }
             }
             auxA = auxA->prox;
         }
-
-      
     }
-
+    freeFila(q);
+    free(visitados);
     return cnt;
 }
 
+/*
+    Função destroiListaAdj: libera memória alocada da lista de adjacência passada
+    Parâmetros:
+    Aresta* primeiro -> endereço do primeiro elemento da lista de adjacência
+ */
 void destroiListaAdj(Aresta* primeiro){
     Aresta* aux = primeiro;
     while(aux){
@@ -241,15 +259,21 @@ void destroiListaAdj(Aresta* primeiro){
     }
 }
 
+/*
+    Função destroiGrafo: libera toda memória alocada pelo grafo e seus vértices
+    Parâmetros:
+    Grafo* G -> endereço do grafo que contém a rede social
+ */
 void destroiGrafo(Grafo* G){
     Vertice *aux;
     if(G->numVertices)
         aux = G->vertices;
     for(int i=0; i<G->numVertices; i++){
-        if(aux->num_arestas)
+        if(aux->num_arestas) //Libera lista de adjacências
             destroiListaAdj(aux->primeiro_elem);
         Vertice* temp = aux;
         aux = aux->prox;
         free(temp); 
     }
+    free(G);
 }
