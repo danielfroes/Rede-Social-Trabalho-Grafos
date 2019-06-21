@@ -29,12 +29,15 @@ int main(int argc, char* argv[])
     Vertice* user = malloc(sizeof(user));
     user->usuario.logged = false;
     
+
+    
+    
     while(true){
 
 
         printMenu(user->usuario);
         scanf("%hd", &menu);
-        // system("clear");
+        system("clear");
 
        
         if(menu == __EXIT__){

@@ -116,30 +116,30 @@ void suggestFriends(Grafo* G, Vertice* user)
     float auxNota, multiplicador;
     Vertice* auxV = G->vertices;
     printf("AMIGOS SUGERIDOS PARA SEU PERFIL:\n\n");
-    //Sugestão é primeiramente feita usando uma bfs, caso não encontre sugestões
-    //Solução sequancial  é tentada
-    if(!bfs(G, user)){ 
-            for(int i = 0; i  < G->numVertices; i++) {
-                if(auxV->usuario.id != user->usuario.id)
-                {
-                    auxNota = calculaAfinidade(G, auxV, user);
-                    Aresta* ant;
-                    //Caso não sejam amigos e a afinidade seja maior que 40
-                    if(auxNota >= _SUGGEST_FRIEND_THRESHOLD && !buscar_aresta(user, auxV->usuario.nome, &ant)){
-                        printf("Usuario: %s  %f\n", auxV->usuario.nome, auxNota);
-                        printf("Deseja adicionar como amigo?\n1 - SIM\n2 - NÃO\n");
-                        int op=0;
-                        while(op!=1 && op!=2){ //Leitura de opção válida
-                            scanf("%d",&op);
-                        }
-                        if(op==1){
-                            sendFriendRequest(user, auxV);
-                        }
-                    }
+    
+    //itera por todos vértices dos grafos
+    for(int i = 0; i  < G->numVertices; i++) {
+        //pula o usuário logado
+        if(auxV->usuario.id != user->usuario.id)
+        {
+            auxNota = calculaAfinidade(G, auxV, user);
+            Aresta* ant;
+            //Caso a afinidade seja maior que o limite de sugestão de amizade e não sejam amigos
+            if(auxNota >= _SUGGEST_FRIEND_THRESHOLD && !buscar_aresta(user, auxV->usuario.nome, &ant)){
+                printf("Você e o usuário %s tem coisas em comum!!\n", auxV->usuario.nome);
+                printf("Deseja adicionar como amigo?\n1 - SIM\n2 - NÃO\n");
+                int op=0;
+                while(op!=1 && op!=2){ //Leitura de opção válida
+                    scanf("%d",&op);
                 }
-                auxV = auxV->prox;
+                if(op==1){
+                    sendFriendRequest(user, auxV);
+                }
+            }
         }
+        auxV = auxV->prox;
     }
+
     
 }
 
@@ -326,7 +326,8 @@ void sendFriendRequest(Vertice* user, Vertice* requested)
     Vertice* a -> vértice que contém o primeiro usuário
     Vertice* b -> vérice que contém o segundo usuários
     Retorno:
-    int afinidade -> grau de afinidade calculado
+    int afinidade/bfs(G, b, a->usuario.id) -> grau de afinidade calculado a partir dos gostos
+                                              e multiplicado pelo inverso da distancia mínima entre os vértices 
 */
 float calculaAfinidade(Grafo* G, Vertice* a, Vertice* b){
     int afinidade = 0;
@@ -340,8 +341,6 @@ float calculaAfinidade(Grafo* G, Vertice* a, Vertice* b){
         afinidade+=100;
     }else if(strcmp(a->usuario.timeEsportivo, b->usuario.timeEsportivo)==0){
         afinidade+=10;
-    }else{
-        afinidade-=10;
     }
     if(strcmp(a->usuario.areaAtuacao, b->usuario.areaAtuacao)==0){
         afinidade+=30;
@@ -349,7 +348,6 @@ float calculaAfinidade(Grafo* G, Vertice* a, Vertice* b){
     if(strcmp(a->usuario.generoFilme, b->usuario.generoFilme)==0){
         afinidade+=20;
     }
-
-    return (float)afinidade;
-    //return afinidade/(float)bfs(G, b, a->usuario.id);;
+    
+    return afinidade/(float)bfs(G, b, a->usuario.id); //quanto mais distante do vertice do usuário, menor a sua pontuação.
 }

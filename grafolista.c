@@ -105,7 +105,8 @@ void imprime_grafo(Grafo *G) {
         for (int j=0; j<G->numVertices; j++){
             A = V->primeiro_elem;
             printf("Vertice: %s, - %d arestas\n", V->usuario.nome, V->num_arestas);
-            for (int i=0; i<V->num_arestas; i++){
+            for (int i=0; i<V->num_arestas; i++)
+            {
                 printf("        |\n");
                 printf("        ->%s\n", A->usuarioAmigo.nome);
                 A = A->prox;
@@ -194,55 +195,121 @@ void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved){
     
 }
 
+// /*
+//     Função bfs: realiza uma busca em largura no grafo dado o vértice de início
+//     Parâmetros:
+//     Grafo* G -> endereço do grafo que contém a rede social
+//     Vertice* startVertex -> vértice inicial
+//     Retorno:
+//     int cnt -> número de vértices encontrados
+//  */
+// int bfs(Grafo* G, Vertice* startVertex){ 
+//     int nArestas, cnt = 0;
+    
+//     Fila* q = criaFila();
+//     //Vetor de visitados
+//     int* visitados = calloc(G->numVertices, sizeof(int));
+
+//     visitados[startVertex->usuario.id] = _VISITADO_;
+//     enqueue(q, startVertex);
+//     while (q->total){
+//         Vertice* aux = dequeue(q);
+
+//         for(int i=0; i<aux->num_arestas; i++){
+//             Aresta* auxA = aux->primeiro_elem;
+//             if(visitados[auxA->usuarioAmigo.id]==_NAO_VISITADO){
+//                 visitados[auxA->usuarioAmigo.id] = _VISITADO_;
+//                 //Busca do vértice que contém o nome do vértice adjacente
+//                 Vertice* temp = buscar_vert(G, auxA->usuarioAmigo.nome);
+//                 enqueue(q, buscar_vert(G, temp->usuario.nome));
+//                 Aresta* ant;
+//                 //Sugetão de amizade é feita caso grau de afinidade seja maior ou igual que 40
+//                 //e os usuários não sejam amigos ainda
+//                 if(calculaAfinidade(G, startVertex, temp)>=40 && !buscar_aresta(startVertex, temp->usuario.nome, &ant)){
+//                     cnt++;
+//                     printf("O usuário %s tem afinidade com você\nDeseja adicioná-lo?\n1 - SIM\n2 - NÃO", temp->usuario.nome);
+//                     int op=0;
+//                     while (op!=1 && op!=2){
+//                         scanf("%d", &op);
+//                     }
+//                     if(op==1){
+//                         sendFriendRequest(startVertex, temp);
+//                     }
+                    
+//                 }
+//             }
+//             auxA = auxA->prox;
+//         }
+//     }
+//     freeFila(q);
+//     free(visitados);
+//     return cnt;
+// }
+
+
+
 /*
-    Função bfs: realiza uma busca em largura no grafo dado o vértice de início
+    Função bfs: realiza uma busca em largura no grafo dado o vértice de início e um id a se buscado
     Parâmetros:
     Grafo* G -> endereço do grafo que contém a rede social
     Vertice* startVertex -> vértice inicial
+    int searchId -> id de busca
     Retorno:
-    int cnt -> número de vértices encontrados
+    int cnt -> distância do vertice encontrado com o vertice atual
  */
-int bfs(Grafo* G, Vertice* startVertex){ 
-    int nArestas, cnt = 0;
+int bfs(Grafo* G, Vertice* startVertex, int searchId)//**  testar função 
+{ 
+    int nArestas, distance = 0;
     
     Fila* q = criaFila();
-    //Vetor de visitados
+
     int* visitados = calloc(G->numVertices, sizeof(int));
 
     visitados[startVertex->usuario.id] = _VISITADO_;
-    enqueue(q, startVertex);
-    while (q->total){
-        Vertice* aux = dequeue(q);
+    //Um nivel é o conjunto de todos os vértices com igual distância ao vertice de referência 
+    int levelQtt = 0; // quantidade de vertices no nivel atual do grafo
+    int nextLevelQtt = 0;// quantidade de vertice no próximo nivel do grafo
 
-        for(int i=0; i<aux->num_arestas; i++){
-            Aresta* auxA = aux->primeiro_elem;
-            if(visitados[auxA->usuarioAmigo.id]==_NAO_VISITADO){
-                visitados[auxA->usuarioAmigo.id] = _VISITADO_;
-                //Busca do vértice que contém o nome do vértice adjacente
-                Vertice* temp = buscar_vert(G, auxA->usuarioAmigo.nome);
-                enqueue(q, buscar_vert(G, temp->usuario.nome));
-                Aresta* ant;
-                //Sugetão de amizade é feita caso grau de afinidade seja maior ou igual que 40
-                //e os usuários não sejam amigos ainda
-                if(calculaAfinidade(G, startVertex, temp)>=40 && !buscar_aresta(startVertex, temp->usuario.nome, &ant)){
-                    cnt++;
-                    printf("O usuário %s tem afinidade com você\nDeseja adicioná-lo?\n1 - SIM\n2 - NÃO", temp->usuario.nome);
-                    int op=0;
-                    while (op!=1 && op!=2){
-                        scanf("%d", &op);
-                    }
-                    if(op==1){
-                        sendFriendRequest(startVertex, temp);
-                    }
-                    
-                }
-            }
-            auxA = auxA->prox;
+
+    enqueue(q, startVertex);
+    nextLevelQtt++;
+
+    while(q->ini != NULL)
+    {   
+        
+        if(levelQtt == 0) //if que controla se todos os vertices em um nivel já foi visitado 
+        {
+            levelQtt = nextLevelQtt;
+            nextLevelQtt = 0;
+            distance++; //incrementa distância do nivel que a busca percorreu
         }
+        Vertice* auxV = dequeue(q);
+        levelQtt--;
+        nArestas = auxV->num_arestas;
+    
+        //itera pela lista de arestas do vertice
+        for(Aresta* auxA = auxV->primeiro_elem; auxA != NULL; auxA = auxA->prox)
+        {    
+            //busca o vertice da aresta
+            Vertice* tempV = buscar_vert(G, auxA->usuarioAmigo.nome);
+            //se achou o vertice que estava procurando
+            if(tempV->usuario.id == searchId)
+            {
+                return distance;//retorna a distancia mínima do vertice
+            }     
+            if(visitados[tempV->usuario.id] == _NAO_VISITADO)
+            {
+                enqueue(q, tempV);
+                nextLevelQtt++;
+                visitados[tempV->usuario.id] = _VISITADO_;
+            }
+            
+        }
+
+      
     }
-    freeFila(q);
-    free(visitados);
-    return cnt;
+
+    return distance;//retorna a distancia do vertice mais longe
 }
 
 /*
