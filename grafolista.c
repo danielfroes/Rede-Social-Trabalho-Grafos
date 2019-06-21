@@ -195,59 +195,6 @@ void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved){
     
 }
 
-// /*
-//     Função bfs: realiza uma busca em largura no grafo dado o vértice de início
-//     Parâmetros:
-//     Grafo* G -> endereço do grafo que contém a rede social
-//     Vertice* startVertex -> vértice inicial
-//     Retorno:
-//     int cnt -> número de vértices encontrados
-//  */
-// int bfs(Grafo* G, Vertice* startVertex){ 
-//     int nArestas, cnt = 0;
-    
-//     Fila* q = criaFila();
-//     //Vetor de visitados
-//     int* visitados = calloc(G->numVertices, sizeof(int));
-
-//     visitados[startVertex->usuario.id] = _VISITADO_;
-//     enqueue(q, startVertex);
-//     while (q->total){
-//         Vertice* aux = dequeue(q);
-
-//         for(int i=0; i<aux->num_arestas; i++){
-//             Aresta* auxA = aux->primeiro_elem;
-//             if(visitados[auxA->usuarioAmigo.id]==_NAO_VISITADO){
-//                 visitados[auxA->usuarioAmigo.id] = _VISITADO_;
-//                 //Busca do vértice que contém o nome do vértice adjacente
-//                 Vertice* temp = buscar_vert(G, auxA->usuarioAmigo.nome);
-//                 enqueue(q, buscar_vert(G, temp->usuario.nome));
-//                 Aresta* ant;
-//                 //Sugetão de amizade é feita caso grau de afinidade seja maior ou igual que 40
-//                 //e os usuários não sejam amigos ainda
-//                 if(calculaAfinidade(G, startVertex, temp)>=40 && !buscar_aresta(startVertex, temp->usuario.nome, &ant)){
-//                     cnt++;
-//                     printf("O usuário %s tem afinidade com você\nDeseja adicioná-lo?\n1 - SIM\n2 - NÃO", temp->usuario.nome);
-//                     int op=0;
-//                     while (op!=1 && op!=2){
-//                         scanf("%d", &op);
-//                     }
-//                     if(op==1){
-//                         sendFriendRequest(startVertex, temp);
-//                     }
-                    
-//                 }
-//             }
-//             auxA = auxA->prox;
-//         }
-//     }
-//     freeFila(q);
-//     free(visitados);
-//     return cnt;
-// }
-
-
-
 /*
     Função bfs: realiza uma busca em largura no grafo dado o vértice de início e um id a se buscado
     Parâmetros:

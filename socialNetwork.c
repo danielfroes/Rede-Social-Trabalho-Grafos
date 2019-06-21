@@ -126,7 +126,7 @@ void suggestFriends(Grafo* G, Vertice* user)
             Aresta* ant;
             //Caso a afinidade seja maior que o limite de sugestão de amizade e não sejam amigos
             if(auxNota >= _SUGGEST_FRIEND_THRESHOLD && !buscar_aresta(user, auxV->usuario.nome, &ant)){
-                printf("Você e o usuário %s tem coisas em comum!!\n", auxV->usuario.nome);
+                printf("Você e o usuário %s tem coisas em comum!!(nota: %f)\n", auxV->usuario.nome, auxNota);
                 printf("Deseja adicionar como amigo?\n1 - SIM\n2 - NÃO\n");
                 int op=0;
                 while(op!=1 && op!=2){ //Leitura de opção válida
@@ -302,18 +302,9 @@ void findTrueLove(Grafo* G, Vertice *user){
     }
 }
 
-void sendFriendRequest(Vertice* user, Vertice* requested)
-{  /*
-    for(int i=0;i<requested->usuario.nSolicitacoes; i++){
-        //Checa para duplas solicitações
-        if(requested->usuario.solicitacoesAmizade[i]->usuario.id == user->usuario.id){
-            printf("Você já enviou uma solicitação para este usuário!\n");
-            return;
-        }
-    }*/
+void sendFriendRequest(Vertice* user, Vertice* requested){  
     //Envio de solicitação de amizade
-    if(requested->usuario.solicitacoesAmizade)
-        requested->usuario.nSolicitacoes++;
+    requested->usuario.nSolicitacoes++;
     requested->usuario.solicitacoesAmizade = realloc(requested->usuario.solicitacoesAmizade, sizeof(Vertice *)*requested->usuario.nSolicitacoes);
     requested->usuario.solicitacoesAmizade[requested->usuario.nSolicitacoes-1] = user;
     printf("Solicitação de amizade enviada!\n");

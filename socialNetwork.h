@@ -10,7 +10,7 @@
 #define __DOTTED_LINE "---------------------------------------------\n\n"
 
 
-#define _SUGGEST_FRIEND_THRESHOLD 10
+#define _SUGGEST_FRIEND_THRESHOLD 30
 #define _LOVE_THRESHOLD_ 50
 #define _FALSE_FRIEND_THRESHOLD_ 10
 
