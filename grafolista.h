@@ -62,5 +62,5 @@ int contarArestas(Grafo* G);
 Aresta* buscar_aresta(Vertice* V, char* nome, Aresta** ant);
 void removerAresta(Grafo* G,Vertice* user, Aresta* toBeRemoved);
 void destroiGrafo(Grafo* G);
-int bfs(Grafo* G, Vertice* startVertex);
+int bfs(Grafo* G, Vertice* startVertex, int searchId );
 #endif
