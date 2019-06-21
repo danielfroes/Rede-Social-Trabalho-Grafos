@@ -5,8 +5,8 @@ Daniel;
 Lucio
 Luisa;
 Luisa
-Lucio;Eduardo;Daniel;
+Lucio;Daniel;Eduardo;
 Marcello
 Daniel;
 Daniel
-Ana;Luisa;Marcello;Danielvis;
+Ana;Danielvis;Marcello;Luisa;
